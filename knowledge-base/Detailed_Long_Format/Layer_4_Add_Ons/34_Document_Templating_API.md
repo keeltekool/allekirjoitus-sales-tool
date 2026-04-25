@@ -1,0 +1,11 @@
+# Document Templating (API-driven)
+
+When your backend system can transmit data but cannot generate formatted PDFs, Document Templating handles the rendering for you. Your system sends JSON key-value pairs via the API, the platform merges them into a predefined PDF template, and dispatches the completed document for signing - zero manual steps, zero portal interaction.
+
+- **End-to-end workflow** - your CRM, ERP, or HR system makes a REST API call containing a document template ID and JSON key-value pairs representing the variable data (names, dates, financial figures, custom identifiers). The platform's templating engine intercepts the request, merges the JSON data into the matching PDF template, generates a finalized document, packages the signature request, and dispatches it to the designated signatories. No human touches the portal at any point
+
+- **What the PDF template looks like** - templates are standard fillable PDFs (Acroforms) with hidden placeholder fields. When opened in Adobe Acrobat's "Prepare Form" tool, the template reveals drawn form fields with specific property names. The templating engine maps incoming JSON keys to these property names to inject the correct values into the correct positions. Your IT team and the platform developers coordinate to ensure JSON keys match the placeholder names in the template
+
+- **Template creation and maintenance** - templates are created using Adobe Acrobat Standard or Pro by drawing placeholder fields and defining property names. Once ready, the template is uploaded to the platform's backend storage and assigned a unique Template ID that your system references in API calls. Template maintenance requires backend coordination, not self-service editing
+
+- **Integration patterns** - the primary pattern serves legacy or lightweight systems that can trigger API calls but cannot render PDFs. Also used for mass standardized document generation where boilerplate text is identical and only variable data changes per request. Aktia Bank uses Document Templating heavily via their internal employee application for in-branch meetings - the system generates the contract, suppresses email dispatch, and returns the signing link directly to the employee's tablet for face-to-face customer signing

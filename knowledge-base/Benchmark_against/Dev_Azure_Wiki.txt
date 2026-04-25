@@ -1,0 +1,293 @@
+Enterprise Features Listing:
+Created by 
+Add your avatar
+ Egert Väinaste, last updated on 15.10.2025  17 minute read
+
+
+Available features as of 14.10.2025 Wiki content
+Signature requests
+Users can send signature request to specified signatories. Sender can upload documents and configure the request before sending. Signatory receives the documents and signs them. Signed documents are legally binding and are sent back to the sender. Different signature request templates can be selected for variety of business cases. In addition of usual signing request, review request for reviewing the documents before signing and form orders to fill the forms are available.
+
+Form orders
+Customer company can send documents to Telia which are then transformed into e-forms. After that, e-forms are available in the Telia Sign portal. E-forms contain spaces in which to write or select. For example, insurance company can send application forms to new customers. Signatories can fill out the information and sign the form. Signed and filled forms are then sent back to the sender. A form order creator can add one or more forms to the request which is sent to the user then. It's also possible to add the same form multiple times, i.e. child insurances when the family has more than one child.
+The form order requests also support multiple signatories.
+
+Open forms
+Customer company sends PDF form to Telia which is then transformed into an e-form. Each form gets its unique link which customers can then put onto their webpage. The system also supports branded domains, like Kuntarahoitus config.
+In this case the process starts with the user when clicking on the link of a specific form. The first step is that the user must strongly authenticate and afterwards can fill and sign the form. The form also supports multiple signatories where one fills in the form and depending on the particular form requirement either needs to sign the form too or will just be the filler of the form. The active filler of the form will automatically be redirected to the signing process, and additionally all signatories will get a link to the signing session via configured delivery method.
+
+Acroform
+Both previous forms requires the dev team to implement the e-form solution which allows to have customized flows and validations. But if those aren't needed and customers have simple PDF forms then they can also attach PDF Forms/Acroform to a particular signature request and the signatory will see the PDF form during the signing session where it can be filled and signed. At the moment, this feature can only be used when the signature request contains one signatory.
+
+Document templating
+Document templating can be seen as another type of PDF forms.
+Telia Sign API users are able to send dynamic JSON key/value data to Telia and they also provide the id of the document template (PDF template) that should be used for it. This JSON data will then be merged into the PDF template before the document is sent out to the signatory.
+This is useful if the integration source isn't able to generate their own PDF files but only make REST API calls.
+
+Review requests
+Review requests include reflection period which allows signatories to consider and review the documents for a predefined time. Documents cannot be signed before the reflection period has ended. Some contracts, for example, loan applications, legally require reflection period. Signatories receive the documents for signing when the reflection period has ended.
+
+Sealing requests
+allows to create sealing requests where documents are sealed by organization certificate without any signatory (not in use and only for demo purposes for now).
+
+Mass signature requests
+Mass signature request template is available in Telia Sign when creating a new signature request. It allows for sending multiple signing requests to multiple different signatories at once which reduces time and work. Documents can be imported in a single ZIP-file, and recipients are imported in a CSV-file. Both documents and recipient must have an identifier so they can be linked together and documents are directed to the correct signatories.
+
+Bundle signature requests
+allows to sign multiple signature requests at once belonging to the same signatory, i.e. schools principal or HR manager
+
+Signing rights report
+Depending on the selected signing request template, it can be possible to generate a report regarding representation rights. After all the signatories have signed the signature requests, the report tells if the signatories are allowed to sign for particular company or not. The report is attached with the signed documents.
+This feature has been sunset for now because no customer used it and the maintenance costs weren't justifiable. Here is still the code: TeliaSign.Services.Procuration - Repos
+
+Document request from the signatory
+While creating a signature request, the sender can specify if documents, for example certificates, from the recipient, are required. For example, a new job might require specific documents from the new employee. Signatory must upload the required documents during the signing ceremony before signing the original document is possible.
+
+Signatory forwarding
+Signatory can forward the signature request to another person. This might be required if, for example, the original signatory doesn't have the rights to sign the specific document. Forwarding the signature can be done by clicking the link in email or pressing the exit button during the signing ceremony. The original signatory can fill out the information for the new signatory and forward the request.
+
+Strong authentication to forms service
+By default, authentication to forms service (the first forms option above) is se to SMSOTP which means signatories can authenticate with codes sent by SMS. Filled out forms cannot be signed before authentication. Telia Tunnistus can be activated which means that signatories have to authenticate with either Mobile ID or Bank ID. This is useful in case of sensitive or important documents where it is extremely important to ensure the identity of the signatory.
+
+Displaying signature request documents in forms service
+By default, documents added to the form order aren't displayed in the form service but only the forms themselves. Activating this feature gives the signatory the ability to view additional documents too which can be important for the signatory. It is also recommended to activate Telia Tunnistus instead of SMSOTP when this feature is activated.
+
+Strong authentication to MyDocuments/MySignatures
+By default, authentication is se to SMSOTP which means signatories can authenticate with codes sent by SMS. Documents cannot be signed without authentication. Telia Tunnistus can be activated which means that signatories have to authenticate with either Mobile ID or Bank ID. This is useful in case of sensitive or important documents where identity of the signatory must be ensured.
+(Note: this UI should be merged to MySigningPortal, partly it's done but it hasn't been rolled out to customers and final QA is missing too)
+
+Signatory status view
+While adding signatories, the sender can specify, whether a signatory can see other signatories and their status. If the status view is selected, signatory request contains other signatories and shows if they have already signed the document. This can be useful if, for example, accountants must ensure that everyone else has signed the document first.
+
+Automatic reminders
+Telia Sign sends automatic reminders by email if the signatory hasn't signed the request yet. The first reminder is sent after two days have passed since sending the request. The second reminder is sent one day before the request expires. Reminder messages contain the same information as the original signing request and they ensure that the signatory doesn't forget to sign. Reminders can also be configured for enterprise-customers. SMS-reminders cost extra charge.
+
+Manual reminders
+Manual reminders allows the portal user to send individual reminders to the signatory if automatic reminders aren't sent often enough. They must be sent manually in the signing portal and are sent by email or SMS. Manual reminders contain the same information as the signing request and automatic reminders. SMS-reminders cost extra charge.
+
+Manual archiving
+Signed requests can be archived manually in the signing portal. When user clicks the "Send to archive"-button, a small window appears. User can select which documents will be archived. When the archiving is done, signing request status goes from "Closed" to "Archived" and selected documents will be archived. Visibility of the archiving feature can be set for the signature request template.
+
+Automatic archiving
+If automatic archiving is enabled, completed signature requests will be archived automatically. Portal users won't have to archive them manually and status of the signing request will change from closed to archived in few seconds. If the signing request isn't signed by the signatory, it won't be archived.
+
+AD login
+Telia Sign offers AD login option for customers. This mean that customers can authenticate themselves using Azure Active Directory. AD login provides a simple, fast and secure access to Telia Sign. Other login options are email and password or Telia ID Broker (Telia ID Broker isn't used by any customer and might require some adjustments to be able to start using it).
+
+Copy signature requests
+Previously created signature requests can be copied. Copying the signature request redirects the user to create a new signature request. All the information is already filled out. This is particularly useful if, for example, the signatory forgot to sign the documents in time, and they have to be sent again. Copying feature works for both closed and open requests.
+
+Signatory suggestions
+While creating a new signature request and adding signatories in the signing portal, Telia Sign can suggest previously entered signatories. Users can select the correct signatories from the list instead of writing down the same information again.
+
+Signatory suggestions with SSN
+While creating a new signature request and adding new signatories, Telia Sign can suggest previously entered signatories according to the social security number (SSN). For example, if just the first number of the SSN is written in the correct field, signing portal suggests previous signatories whose SSN starts with the same number.
+
+Dynamic metadata
+Metadata can be configured on signature request, signatory and document level. Metadata includes all the information and checkboxes that sender, and signatory can fill out or check. For example, insurance company might want to add "Insurance number" metadata option in the signing portal.
+
+Metadata extraction from filled out forms
+When the form has been filled out and signed, metadata can be extracted to the dynamic metadata service. Metadata includes all the information the signatory has filled out, for example, name, home address, phone number and so on. Customer companies do not have to extract the metadata manually. This option is useable for the first form option above. It's currently only used by Fennia to get the metadata of the filled form for their archiving integration.
+
+Manual workflow steps
+After the signature request has been signed, portal user can set the signature request status. Status can be, for example, "In progress" or "Processed". By default, status can be open, closed or archived. This can be useful if several different people work in the signing portal and can see that other person has already started processing the signature request.
+
+Custom message templates
+By default, Telia Sign has generic message templates for different use cases. These use cases include, for example, sending signature requests or reminding signatory to sign the document before the request expires. Messages can be customized and branded for Enterprise customers. New templates can also be added for signing requests. Message notifications can also be turned off.
+
+Message deliveries methods
+By default, messages are sent by email. SMS delivery can be enabled for enterprise customer. All messages can be sent only by SMS or SMS messages can complement email messages. SMS delivery has an additional fee.
+
+API and webhooks
+Webhook is a common term for an integration technique that roughly translates to an http request on an event. A developer can subscribe to a webhook, indicating that they wish to receive notifications when certain events occur. Enterprise customer can integrate with their own systems via APIs and webhooks
+
+Different document types
+It is possible to add a dropdown of different document types to the signing portal. When creating a new signature request, users can select a document type from the dropdown instead of uploading a new document suitable for the situation. Each document type can have different PAdES template.
+
+Branding
+Telia Sign can be branded for Enterprise customers. This means customizing, for example, colors, logos, fonts, and background image. Branding can be configured for both signing portal and end user view. Thus, branding is visible for both the sender and the signatory. Telia can configure the branding according to graphic instructions or Bootsratp file delivered by the customer.
+
+Branded PAdES
+When the document has been signed, the created PAdES file can have customer company's logo. By default, PAdES files have Telia logo instead. The logo is visible for both the signatory and sender.
+
+Watcher
+When creating a new signature request, it is possible to add watcher for it. Watcher receives a message when the signature request has been signed. Watcher does not sign the signature request.
+
+Signatory roles
+It's possible to configure metadata for a customer to allow to set the particular signatory role. This signatory role will be displayed for the signatory during signing process and will also end up in the signed PAdES document.
+(i.e. Aktia, Keyloop)
+
+Signatory forwarding after signing
+A signatory can be forwarded to an external service after the signing process.
+(i.e. Springvest)
+
+Signature request signing levels
+
+Email or SMS
+Strong authentication (AES)
+Drawn signatures
+QES (still uses SK's demo environment for SmartID but Finnish ID card already produces valid documents)
+
+
+Available features - Configuration:
+signature requests
+allows to create signature requests with documents and signatories
+
+form orders
+allows to create e-forms to be filled before signing them
+
+review requests
+allows to create signature requests that can be reviewed but must have some "thinking" time, i.e. loan applications
+
+sealing requests
+allows to create sealing requests where documents are sealed by organization certificate without any signatory (not in use and only for demo purposes for now).
+
+mass signature requests
+allows to send multiple signature requests at once defined via CSV file
+
+bundle signature requests
+Allows to sign multiple signature requests at once belonging to the same signatory, i.e. schools principal or HR manager.
+Configure it per tenant in appsettings.json of Signign.Auth API service:
+
+"FeatureFlags": {
+    "BundleSigning": {
+      "Enabled": true,
+      "Tenants": [
+        "<tenant-id>" // Tenant name
+      ]
+    }
+}
+document templating
+API user is able to send dynamic json key/value data and specify the corresponding document template (=PDF template) used for filling in the PDF
+
+signing rights report
+generates a report after all signatories have signed telling if the signatories are allowed to sign for particular company or not
+
+Configuration: table [signing].[SignatureRequestTemplate] column [IsSigningRightsReportEnabled]
+
+signatory document uploads during signing ceremony
+signatory is asked to upload additional documents during signing ceremony, i.e. certificates,...
+
+Configuration: table [signing].[SignatureRequestTemplate] column [IsSignatoryDocumentUploadEnabled]
+
+signatory forwarding
+allows the signatory to forward the signature request to another user, i.e. current signatory doesn't have the rights to sign contracts over 5000 €
+
+Configuration: table [signing].[SignatureRequestTemplate] column [IsSignForwardingEnabled]
+
+authentication strength for signature request template
+Insert the correct binding between signature request template and authentication group. See the Signing DB, the tables [authentication].[AuthenticationGroup] and [authentication].[SignatureRequestTemplateAuthenticationGroups]
+
+strong authentication to forms service
+default authentication is SMSOTP but Telia Tunnistus can be activated
+
+Configuration: in Form DB, table [configuration].[FormConfigurationValue]
+
+displaying signature request documents in forms service
+by default, documents added to the form order aren't displayed in the form service but only the forms themselves. When activating this feature then it's recommended to also activate "Telia Tunnistus" instead of SMSOTP
+
+Configuration: table [signing].[SignatureRequestTemplate] column [AreDocumentsAvailableInFormService]
+
+strong authentication to MyDocuments/MySignatures
+default authentication is SMSOTP but Telia Tunnistus can be activated
+
+signatory status view
+this allows a signatory to view other signatory signing statuses, i.e. for accountants where they want to ensure that all others have signed to document first
+
+Configuration: table [signing].[SignatureRequestTemplate] column [MyViewSelection]
+table [dbo].[TenantUrl] columns ,[MyLinkRoutingBaseUrl], [MyViewBaseUrl]
+
+automatic reminders
+Allows to send automatic reminders after a specific time or before a signature request expires.
+
+INSERT INTO [reminderTemplate].[Template]
+  (Id, TenantId, DepartmentId, SignatureRequestPhase, CreatorId, CreationDate)
+VALUES
+  ('<newid>', '<tenantid>', '<departmentid>', 'Signing', '<creatorid>', GETUTCDATE())
+
+INSERT INTO [reminderTemplate].[TemplateReminder]
+  (Id, TemplateId, ValueInMinutes, DisplayUnit, CreatorId, MessageTemplateId, DeliveryMethod, Moment, CreationDate, MinimalSignatureRequestLifeTimeInMinutes)
+VALUES
+  ('<newid>', '<remindertemplateid>', 1440, 'h', '<creatorid>', '<messagetemplateid>', 'Email', 'AfterSending', GETUTCDATE(), 4320)
+
+INSERT INTO [reminderTemplate].[TemplateReminder]
+  (Id, TemplateId, ValueInMinutes, DisplayUnit, CreatorId, MessageTemplateId, DeliveryMethod, Moment, CreationDate, MinimalSignatureRequestLifeTimeInMinutes)
+VALUES
+  ('<newid>', '<remindertemplateid>', 1440, 'h', '<creatorid>', '<messagetemplateid>', 'Email', 'BeforeExpiration', GETUTCDATE(), 4320)
+manual reminders
+Allows the portal user to send manual reminders to the signatory.
+
+INSERT INTO [reminderTemplate].[TemplateReminder]
+  (Id, TemplateId, ValueInMinutes, DisplayUnit, CreatorId, MessageTemplateId, DeliveryMethod, Moment, CreationDate, MinimalSignatureRequestLifeTimeInMinutes)
+VALUES
+  ('<newid>', '<remindertemplateid>', 0, 'h', '<creatorid>', '<messagetemplateid>', 'Email', 'Manual', GETUTCDATE(), NULL)
+manual archiving
+allows the portal user to archive signature request manually from the portal
+
+automatic archiving
+when signature request is completed then it will automatically be archived
+
+AD login
+customer users can login with their own AD logins
+
+copy signature requests
+allows to copy previously created signature request. If the documents are already signed then those documents won't be copied
+
+Configuration: table [configuration].[SignatureRequestConfigurationValue] or default value from [configuration].[SignatureRequestConfiguration]
+
+signatory suggestions
+displays previously entered signatories when creating new signature requests
+
+Configuration: table [configuration].[SignatureRequestConfigurationValue] or default value from [configuration].[SignatureRequestConfiguration]
+table [signing].[SignatureRequestTemplate] column [IsSignatorySuggestionEnabled]
+
+signatory suggestions with SSN
+also includes SSN when suggestion signatories
+
+Configuration: table [configuration].[SignatureRequestConfigurationValue] or default value from [configuration].[SignatureRequestConfiguration]
+
+dynamic metadata
+metadata can be configured on signature request, signatory and document level
+
+metadata extraction from filled in forms
+when submitting a form those values can be extracted to the dynamic metadata service
+
+manual workflow steps
+portal user can manually set signature request status to for example "processing", "processed",... after a signature request completes
+
+Configuration: table [signing].[SignatureRequestTemplate] column [ManualWorkflowStates]
+
+custom message templates
+message templates can be customized for Enterprise customers. Message notifications can also be turned off.
+
+Message deliveries methods
+Email and optional SMS delivery is supported. SMS delivery has additional fee
+
+Configuration: table [signing].[SignatureRequestTemplate] column [DeliveryMethods]
+
+API and webhooks
+Enterprise customer can integrate with their own systems via APIs and webhooks
+
+Different document types
+It is possible to add a dropdown of different document types to the portal and each document type can have different PAdES template
+
+Configuration: table [signing].[SignatureRequestTemplate] column [DocumentTypes]
+
+branding
+Enterprise customer can have branded UIs
+
+branded PAdES
+Enterprise customer can have branded PAdES files
+
+AcroForms
+Set the REACT_APP_ENABLE_ACROFORMS evn variable to true. Setup the SignatureRequestTemplate.DocumentType DB column, see details on DocumentType page
+
+Watchers
+Enable the watchers feature to set column [signing].[SignatureRequestTemplate].[IsWatchersEnabled] = 1 in Signing DB.
+
+auto deletion of signature requests
+Default configuration in [configuration].[SignatureRequestConfiguration] table, key SignatureRequestDeletionInDays. Configuration per tenant in [configuration].[SignatureRequestConfigurationValue]
+
+signature request date limit display in UI.Portal
+Default configuration in [configuration].[SignatureRequestConfiguration] table, key SignatureRequestShownInDays. Configuration per tenant in [configuration].[SignatureRequestConfigurationValue]
+

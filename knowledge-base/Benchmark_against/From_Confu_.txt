@@ -1,0 +1,277 @@
+Created by 
+Add your avatar
+ Egert Väinaste on 25.03.2026  10 minute read
+Complete Service Reference for Pre-Sales, RFP Responses, and Procurement Inquiries
+Version 1.0 | 2026-03-25
+1. Service Overview
+Allekirjoitus.fi is a cloud-native SaaS electronic signing service operated by SK ID Solutions AS. The service enables organizations to send PDF documents for legally binding electronic signatures using Nordic-Baltic electronic identification methods.
+
+Service provider: SK ID Solutions AS (Pärnu mnt 141, 11314 Tallinn, Estonia) Service URL: allekirjoitus.fi Developer docs: https://developer.teliasign.com/ API docs (Swagger): https://apidoc.teliasign.com/ Price list: https://www.skidsolutions.eu/price-list/ Service T&C: https://www.skidsolutions.eu/wp-content/uploads/2026/01/Allekirjoitus_fi_Service_Terms_and_Conditions.pdf
+
+2. Service Tiers
+2.1 Basic Tier (Portal Packages)
+Self-service web portal for sending signature requests. No API access.
+
+S	10	1	15 EUR/month
+M	35	5	45 EUR/month
+L	80	10	85 EUR/month
+Overage: 1.50 EUR per additional signature request. Login: Email + password only. Authentication: Strong (AES) only — Finnish bank IDs + Mobile Certificate + Swedish BankID/Freja eID included. SMS costs included (for OTP document retrieval only).
+
+2.2 Enterprise Tier
+Full-featured platform with API, SSO, forms, branding, and custom workflows. Unlimited users.
+
+Platform base fee	275 EUR/month
+Strong signature (AES)	0.80 EUR/signatory
+Light signature (SES)	0.65 EUR/signatory
+SMS message	0.10 EUR/message
+Document sealing (without signer)	0.30 EUR/document
+Nordic-Baltic auth add-on	125 EUR/month
+Online form template	25 EUR/month per active form
+Additional tenant/environment	75 EUR/month
+File conversion	0.25 EUR/document
+File sharing to non-signatories	0.15 EUR/recipient
+Custom branding (one-time)	980 EUR
+Professional work	145 EUR/hour (min 0.5h)
+Specialist/architecture	190 EUR/hour
+Billing unit: 1 Signature Request (SR) = charged per signatory when dispatched, regardless of whether signing is completed or declined.
+
+3. Authentication Methods
+3.1 Summary Table
+1	Finnish Bank IDs	Finland	AES	Both	Included
+2	Mobile Certificate (Mobiilivarmenne)	Finland	AES	Both	Included
+3	Swedish BankID	Sweden	AES	Both	Included
+4	Freja eID	Sweden	AES	Both	Included
+5	Norwegian BankID / Vipps / Buypass	Norway	AES	Enterprise	Add-on (125 EUR/month)
+6	Danish MitID	Denmark	AES	Enterprise	Add-on
+7	Smart-ID	Estonia, Latvia, Lithuania	AES + QES	Enterprise	Add-on
+8	Web EID / Smart Cards	Finland, Latvia, Lithuania, Croatia, Czech Republic, Belgium	QES	Enterprise	—
+9	SMS OTP	Global	SES	Enterprise	0.65 EUR/signatory + 0.10 EUR SMS
+10	Email OTP	Global	SES	Enterprise	0.65 EUR/signatory
+11	InkSign (drawn signature)	Global	SES	Enterprise	—
+Supported Finnish banks: OP, Nordea, Danske Bank, Säästöpankki, Aktia, S-Pankki, POP Pankki, Ålandsbanken, OmaSP, Hightrust.id
+
+3.2 Signature Levels Explained
+AES (Advanced Electronic Signature): Default level. Uses high-assurance eIDs via the Finnish Trust Network. The platform applies a digital seal (AATL certificate + eIDAS qualified timestamp) on behalf of the signer. Meets eIDAS requirements for advanced electronic signatures.
+
+QES (Qualified Electronic Signature): Highest level. Available via Web EID smart cards and Smart-ID. Uses the signer's own personal qualified certificate (e.g., DVV-issued certificate on Finnish ID card). Requires PIN 1 for authentication + PIN 2 for signing. The platform orchestrates the process and applies a qualified timestamp.
+
+SES (Simple Electronic Signature): Lowest level. Enterprise-only. Uses SMS OTP, email OTP, or drawn signature. No formal digital identity verification. Suitable for low-risk internal documents or face-to-face scenarios.
+
+3.3 Authentication Architecture
+The Signing-Auth service routes signers to one of two identity providers based on tenant configuration:
+
+Telia ID Broker (Telia Tunnistus): Handles all AES authentication via Finnish Trust Network and Nordic-Baltic eIDs
+Internal Sign IDP: Handles SES methods (OTP, InkSign) and QES direct integrations (Web EID, Smart-ID)
+4. Signing Workflows
+4.1 Signing Order Options
+Simultaneous (parallel): All signers receive invitations immediately and sign in any order. Configured by setting signing order to "0" for all signatories.
+
+Sequential: Signatories assigned levels (1, 2, 3...). Level 2 is invited only after all level 1 signers complete. Level 3 after level 2, etc.
+
+Hybrid: Multiple signers on the same level + sequential between levels. Example: two approvers at level 1 must both sign before CEO at level 2.
+
+4.2 Advanced Workflow Features (Enterprise only)
+Signatory Groups: Hierarchical approval chains. If lower-level management rejects, upper management never sees the document. Workflow stops immediately.
+
+Mass Signing: Dispatch individual signature requests to hundreds of recipients simultaneously. Sender uploads a ZIP file (documents) + CSV file (recipient data with linking identifiers).
+
+Bundle Signing: A recipient authenticates once and signs multiple open signature requests in a single batch session. Requirements: requests must be from the same tenant, same auth level, and exact match on signer name/email/phone/SSN.
+
+Review Period (Reflection Period): Mandatory waiting time before signing is permitted (e.g., 7-14 days). Signer can view the document but "Sign" button is disabled until timer expires. Required by Finnish banks for certain loan applications.
+
+Manual Workflow Steps: Senders can update request status to custom states ("In progress", "Processed") for internal coordination.
+
+4.3 Workflow Behavior
+Rejection: Signatory writes a reason for refusal. Status changes to "Rejected". All signatories notified.
+
+Expiration: When deadline passes without all signatures, status changes to "Expired". Cannot be completed after. All signatories notified.
+
+Cancellation: Sender can cancel at any time before completion. Status changes to "Cancelled". All parties notified.
+
+After dispatch — cannot modify:
+
+Cannot add new signatories (must create new request or use Copy function)
+Cannot change validity period (must create new request)
+4.4 Reminders
+Automatic: Default: 2 days after initial request + 1 day before expiry. Enterprise: timing and intervals fully configurable.
+
+Manual: Sender can trigger on-demand reminders to individual pending signatories via portal.
+
+5. Portal Features
+5.1 Dashboard
+Central view of all signature requests with statuses. Tabs: Sent, Drafts. Search function. Status indicators: Open, Closed, Cancelled, Rejected, Expired, Archived.
+
+5.2 Signature Request Creation (step by step)
+Click "Signature request" button
+Enter subject and select language (Finnish, Swedish, English)
+Upload documents (PDF-A, or other formats with file conversion) + optional reference attachments
+Configure security settings (require auth before reading, hash/encrypt signer Personal ID)
+Set validity/expiration period (e.g., 7, 14, 30, 90 days)
+Add signatories (name, email, phone; optional: SSN for identity restriction, signing order, mandatory/optional toggle)
+Send or save as draft
+5.3 Events Tab
+Real-time audit log per request: created, emails sent/bounced, opened, authenticated, signed. Timestamped. A detailed XML audit trail is also embedded in the finalized document.
+
+5.4 Copy Function
+Duplicates an existing request into a new draft with all pre-filled information. Useful when a request expires or when a missing signatory needs to be added.
+
+5.5 Additional Portal Features
+Signatory Suggestions: Auto-suggests previously used contacts, including partial SSN matching.
+
+Watchers/Followers: Non-signing observers who track progress and can download the final signed document.
+
+Signatory Forwarding: A signer can delegate the request to another person by pressing exit and entering the new signer's details.
+
+Document Requests: Sender can require signers to upload mandatory attachments (ID copies, certificates) before they can sign.
+
+Signatory Status View (MyView): Option for signers to see names and statuses of other signers during the workflow.
+
+Manual/Automatic Archiving: Manual "Send to archive" button or auto-archive on completion.
+
+6. Document Handling
+6.1 Input Requirements
+Format: PDF-A required (per T&C Section 4)
+No password protection allowed
+Maximum file size: 100 MB per document
+File conversion (Enterprise add-on): Automatically converts Word, Excel, PowerPoint, and common image files to PDF-A on upload
+6.2 Document Types in a Request
+Documents: Primary files that are signed
+Attachments: Reference materials (T&C, appendices) delivered alongside but NOT signed
+6.3 Output Format
+PAdES-LTV (Long-Term Validation): The final signed document contains:
+
+Digital seal using AATL-compatible certificate
+eIDAS-level qualified timestamp
+Embedded XML audit trail (signing events, timestamps, IPs, auth methods)
+Signer's HETU in plain text in XML metadata (not on visible pages)
+System-generated cover page summarizing signatures
+Cover page: Shows signatory name, authentication method, date/timestamp. Enterprise customers can customize: company logo, title, and which data columns are displayed (can include IP address, SSN).
+
+Verification: Document integrity verifiable offline in Adobe Acrobat Reader without external service connection.
+
+7. Online Forms (E-Forms) — Enterprise Only
+7.1 Form Types
+Form Orders (Closed Forms): Sender selects a form template, sends to specific recipients. Signer authenticates, fills the HTML form, submits, then signs the generated PDF.
+
+Open Forms (Public Forms): Public-facing forms on custom URLs (e.g., loan applications). Signer clicks "Apply Now" on customer's website, authenticates first, fills the form, auto-redirected to signing.
+
+Acroforms: Simple fillable PDF forms. Signer types into PDF text boxes during standard signing session. Limited to single signatory per request.
+
+7.2 Form Capabilities
+Dynamic HTML with cascading/conditional logic (fields appear based on previous answers)
+Text fields, radio buttons, checkboxes, comment boxes, date fields
+Attachment upload requirements (e.g., upload ID before signing)
+Complex forms possible (180+ fields)
+Accessible for screen readers
+Custom validation rules (email format, field length)
+7.3 Form Data Handling
+Form input temporarily stored as JSON in Forms Database
+JSON immediately deleted after merge into final PDF
+After merge, data exists only in the signed PDF
+API pre-population: customer system sends JSON data + template ID, system auto-generates and dispatches
+API data extraction: form data extractable after signing, pushed to customer CRM/archive via webhooks
+7.4 Form Configuration
+No self-service form builder. Forms built by SK development team using C# models and HTML/Razor views. Customer provides PDF template; developer uses internal tool to generate base code, then manually configures HTML, translations, SQL, and deploys. Typical development: 1-2 days billable work per form.
+
+8. API (Enterprise Only)
+8.1 Overview
+Full REST/JSON API. Base URL: https://api.teliasign.com/
+
+8.2 Authentication
+JWT + API Management subscription key. Login via POST /identity/login with username, password, tenantId. Token passed as Authorization: Bearer {token}. Subscription key in Ocp-Apim-Subscription-Key header. Token refresh via /identity/token/refresh.
+
+8.3 Signature Request Creation Flow
+POST /signing/signaturerequest — create container (Draft status 0) with subject, signatories, auth strengths, language, expiration
+POST /storage/document — upload Base64-encoded document, optional ?validateforsigning=true
+POST /signing/signaturerequest/{id}/document — attach document to request
+PATCH /signing/signaturerequest/{id} — update status to Open (1) to dispatch
+8.4 Webhook Events
+Subscribe via POST /hooks/v1/subscription. Supported events:
+
+signaturerequestcreated / SignatureRequestCreatedEmailSent
+signaturerequeststatusupdated (sent, opened, rejected, cancelled, expired)
+signatorysigned (individual signer completed)
+signaturerequestcompleted (all signed, document sealed)
+Webhook payload contains only IDs (SignatureRequestId, TenantId, SignatoryId) — no personal data. Customer must call API to retrieve sensitive details.
+
+8.5 Metadata
+PUT /metadata/{entityType}/{entityId}/{key} — attach key-value pairs at SignatureRequest, Signatory, or Document level. GET /metadata/{entityType}/{entityId} — retrieve metadata. GET /metadata/{referenceId} — retrieve by reference.
+
+8.6 OneStep API
+Consolidated single-call container for systems that cannot orchestrate the multi-step flow (e.g., Salesforce integrations).
+
+8.7 Document Retrieval
+GET /metadata/document/{documentId} — metadata about completed document. GET /storage/document/{blobConnectionId} — binary file download (application/octet-stream).
+
+9. Integrations
+9.1 SSO — Microsoft Entra ID / Azure AD
+Protocol: OpenID Connect (claims-based). User clicks "AD Login", redirected to company's Entra ID, returns with identity claims (name, AD groups), exchanged for JWT. AD groups mapped to departments and roles. New users auto-provisioned on first login. Access revoked by removing user from AD group — no action needed in portal.
+
+Limitation: No self-service admin UI. AD group mappings require developer to manually configure code and SQL scripts per customer. Setup time: days.
+
+9.2 Custom Domains
+Enterprise customers can white-label with own domain (e.g., signing.kpmg.fi). Currently 8 customers use this. Routed via Azure Front Door. Customer provides SSL certificate. Manual setup: up to 10 business days.
+
+9.3 Webhooks
+Real-time HTTP push notifications to customer backends. Payload contains only IDs (GDPR compliant). Customer calls API back to fetch details. Used for: archiving automation, CRM sync, status tracking.
+
+9.4 Existing Archiving Integrations
+Telia Arkisto (Arkinet): Direct push integration (only ready-made connector)
+Sefort (Zefort): Listens for webhook, auto-retrieves via API
+WebDoku: Custom integration pushing documents + metadata
+9.5 CRM & HR Integrations
+Built via API on case-by-case basis. No pre-built connectors. Customers have integrated with:
+
+Sympa HR (custom API)
+Salesforce Commerce Cloud (via Kafka/Mulesoft + webhooks)
+Microsoft Dynamics CRM (customer builds from scratch via REST API)
+9.6 What Does NOT Exist
+No native SharePoint integration
+No pre-built connectors or plugins (zero — vs competitors with 60+)
+No Microsoft Power Automate plugin
+No mobile SDK or native iOS/Android app
+No self-service signup or free trial
+No Baltic document formats (ASiC-E, BDoc, EDoc, ADoc)
+10. User Roles & Access Management
+10.1 Basic Tier Roles
+Primary/Admin	Add/remove users	Full organizational access
+Standard user	Regular sender	Own documents only
+Extended user	Extended visibility	All organization documents
+User changes communicated to SK via support@allekirjoitus.fi (not self-service, per T&C Section 9.2).
+
+10.2 Enterprise Tier Roles
+Hierarchical: Tenant > Department > Group > User
+
+Department User	Standard member	Own signature requests only
+Department Admin	Department supervisor	All requests in department
+Organization Admin	Top-level admin	Own department + all sub-departments
+Access automated via SSO/Entra ID. First login auto-creates account. AD group removal revokes access (per T&C Section 9.3).
+
+11. Language Support
+Portal interface	Finnish, Swedish, English
+Email notifications	Finnish, Swedish, English
+SMS messages	Finnish, Swedish, English
+Signing invitation language	Selectable per request
+12. Basic vs Enterprise — Complete Feature Comparison
+Access	Web portal only	Web portal + REST API
+Login	Email + password	SSO (Entra ID) + email/password
+Users	1-10 (per package)	Unlimited
+Authentication	AES only (Finland + Sweden)	AES + SES + QES; Nordic-Baltic add-on available
+Signing workflows	Sequential + parallel	Sequential + parallel + hybrid + signatory groups
+Mass signing	No	Yes
+Bundle signing	No	Yes
+Review periods	No	Yes
+API access	No	Full REST/JSON API
+Webhooks	No	Yes
+Online forms	No	Yes (add-on)
+Metadata	No	Yes (key-value at request/signatory/document level)
+Templates	No	Yes (workflow + document templates)
+File conversion	No	Yes (add-on)
+Custom branding	No	Yes (portal, emails, cover page)
+Custom domains	No	Yes
+SSO	No	Yes (Microsoft Entra ID)
+SMS for invitations	No (OTP only)	Yes
+Document retention	90 days fixed	Configurable up to 365 days
+Archiving integrations	No	Yes (via API/webhooks)
+Geographic auth coverage	Finland + Sweden	Finland + Sweden + Norway + Denmark + Baltics (add-on)
+Support	Email only	Email + dedicated account management

@@ -7,11 +7,15 @@ import type { KBDocument } from '@/lib/types'
 export function EnterpriseOfferPage({
   kb,
   brandName,
+  lang: pageLang,
 }: {
   kb: KBDocument
   brandName: string
+  lang: string
 }) {
-  const { locale, lang } = useBrand()
+  const { brand } = useBrand()
+  const locale = brand.locale[pageLang as keyof typeof brand.locale] ?? brand.locale.en
+  const lang = pageLang
 
   const today = new Date()
   const date = lang === 'fi'

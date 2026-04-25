@@ -1,0 +1,11 @@
+# SSO / Active Directory Integration
+
+Your employees access the signing portal using their existing corporate Microsoft credentials - no separate passwords, no manual account creation, no IT overhead for user lifecycle management. Integration with Azure AD (Entra ID) via OIDC handles authentication, provisioning, and role assignment automatically.
+
+- **The login experience** - your employee navigates to the portal and clicks the AD Login button. The platform redirects to your organization's Microsoft Entra ID login page, where they authenticate with their standard corporate credentials (including any MFA your organization enforces). If the employee is already signed into their Microsoft account in the browser, the redirect happens instantly in the background - they land in the portal without typing a password
+
+- **Auto-provisioning for new employees** - the platform uses Just-In-Time (JIT) provisioning. When a new employee joins your company, your IT team adds them to the designated AD group. The first time the employee clicks the AD Login button, the system reads their incoming AD claims and automatically creates their portal account on the fly. No administrator needs to manually invite or configure them
+
+- **Role assignment via AD group claims** - your AD groups are mapped to portal roles during initial setup. When an employee authenticates, the system reads their group memberships from the JWT token and assigns the corresponding role: Department User (standard employees, see only own requests), Department Admin (managers, see all requests in their department), or Organization Admin (full visibility across the entire tenant). If an employee is promoted or changes department, their AD group changes in your corporate system - the next login automatically updates their portal permissions
+
+- **What this eliminates** - separate passwords for the signing portal are completely unnecessary. Manual user creation, invitation, and deletion by portal administrators are eliminated. When an employee leaves, your IT team removes them from the AD group and their portal access is immediately and automatically revoked. SSO can be enforced so that standard email/password logins are disabled entirely for your organization

@@ -12,12 +12,14 @@ export default async function BrandHomePage({
   const brand = await getBrandConfig(brandId)
   if (!brand) notFound()
 
-  const kb = loadKB(brand.kb.detail.en)
+  const lang = 'en'
+  const kb = loadKB(brand.kb.detail[lang as keyof typeof brand.kb.detail])
 
   return (
     <EnterpriseOfferPage
       kb={kb}
       brandName={brand.name}
+      lang={lang}
     />
   )
 }

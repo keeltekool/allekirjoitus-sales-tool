@@ -9,6 +9,15 @@ const LAYER_EYEBROWS: Record<number, { en: string; fi: string }> = {
   8: { en: 'Industry Insights', fi: 'Toimialanäkymät' },
 }
 
+const LAYER_TITLES: Record<number, { en: string; fi: string }> = {
+  1: { en: 'Enterprise Default Setup', fi: 'Enterprise-oletusasetukset' },
+  2: { en: 'Core Signing Service', fi: 'Allekirjoituksen peruspalvelu' },
+  3: { en: 'Workflows & Orchestration', fi: 'Työnkulut ja orkestraatio' },
+  4: { en: 'Enterprise Configuration', fi: 'Enterprise-konfiguraatio' },
+  5: { en: 'Productized Add-ons', fi: 'Tuotteistetut lisäpalvelut' },
+  8: { en: 'Industry Workflow Patterns', fi: 'Toimialakohtaiset työnkulkumallit' },
+}
+
 export function LayerHeader({
   partNumber,
   title,
@@ -21,6 +30,7 @@ export function LayerHeader({
   lang?: string
 }) {
   const eyebrow = LAYER_EYEBROWS[partNumber]?.[lang as 'en' | 'fi'] || ''
+  const curatedTitle = LAYER_TITLES[partNumber]?.[lang as 'en' | 'fi'] || title
 
   return (
     <div
@@ -56,7 +66,7 @@ export function LayerHeader({
           margin: 0,
         }}
       >
-        {title}
+        {curatedTitle}
       </h2>
       {description && (
         <div

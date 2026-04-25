@@ -1,0 +1,36 @@
+Price List of Allekirjoitus.fi digital signing service
+BASIC TIER: The Basic Tier provides bundled service packages. The fixed monthly fee includes the costs for Strong Authentication (AES) and SMS messages required for document retrieval.
+
+Service plan	Included Signature Requests (SR)	User limit	Price per Additional SR (€)	Fixed Monthly Fee (€)
+S	10	1 User Account	1,50	15,00
+M	35	Up to 5 User accounts	1,50	45,00
+L	80	Up to 10 User accounts	1,50	85,00
+ENTERPRISE TIER: The Enterprise Tier requires a mandatory monthly platform fee, with usage billed per transaction.
+
+Fixed Monthly Subscription Fees
+
+Service Component	Fee (€/month)	Description
+Platform Access Fee	275,00	Mandatory base fee for Enterprise Tier access
+Additional Environment	75,00	Per additional tenant (e.g., subsidiary, separate business unit)
+Online Forms	25,00	Per active form template
+Nordic-Baltic Authentication	125,00	Add-on for cross-border eID authentication methods
+Transactional Usage Fees
+
+Usage Component	Price (€/Unit)	Description
+Signing Request (Strong Auth / AES)	0,80	Per Signatory. Strong authentication, includes sealing
+Signing Request (Light Auth / SES)	0,65	Per Signatory. Lower assurance methods (SMS OTP, email OTP, drawn signature), includes sealing
+SMS Message	0,10	Per Message. Document retrieval notifications; billed separately
+Document Sealing	0,30	Per Document. Custom or additional sealing requests
+File Conversion	0,25	Per Document. Conversion of non-PDF files to PDF-A format
+File Sharing	0,15	Per Recipient. Sharing signed document with non-signatories
+One-Off and Hourly Professional Fees
+
+Fee Type	Fee (€)	Minimum Charge	Purpose
+Customization & Branding Fee	980,00	One-Time Fee	Custom portal UI, message templates, PAdES document cover
+Development & Configuration	145,00 / hour	0,5 hours	Customer-specific projects, testing, form work, and support/change requests
+Specialist Consultation	190,00 / hour	Customer-specific projects, testing, form work, and support/change requests	Consultation, architecture, and project management
+Prices are VAT exclusive
+
+Implementation of terms and conditions of the price list
+1. Signature Request (SR) is charged per signatory when a document is dispatched, regardless of whether the recipient signs.
+2. SK is entitled to charge (€145/hour) for resolving issues not attributable to SK or caused by the Subscriber’s equipment or network.

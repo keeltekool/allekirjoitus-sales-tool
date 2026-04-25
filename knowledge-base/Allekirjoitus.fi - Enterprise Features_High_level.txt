@@ -1,0 +1,96 @@
+Allekirjoitus.fi - Enterprise Feature Overview
+Core Signing Service
+Qualified & Advanced Electronic Signatures
+eIDAS-compliant digital signing across the EU. Every signed document receives a qualified timestamp and integrity seal via an AATL-certified certificate, ensuring long-term legal validity and tamper-proof evidence.
+
+Broad Authentication Coverage
+Strong authentication (AES) via Finnish Trust Network banks (OP, Nordea, Danske, Aktia, S-Pankki, and more), Finnish Mobile Certificate, Swedish BankID, Norwegian BankID, Vipps, Danish MitID, Baltic Smart-ID, Mobile-ID, and Estonian e-Residency. Qualified signatures (QES) via national ID cards (Finland, Estonia, Latvia, Lithuania, Croatia, Czech Republic, Belgium) and Smart-ID QES mode.
+
+Light Signing Methods (SES)
+SMS OTP, Email OTP, and hand-drawn signature (InkSign) for lower-risk scenarios where strong identity verification is not required.
+
+Portal & REST API
+Full-featured web portal for document management plus a REST API for automated workflows. Webhook subscriptions deliver real-time lifecycle events (request created, status updated, signatory signed, request completed) with privacy-safe payloads.
+
+Multi-signer Workflows
+Simultaneous or sequential signing order. Signatory groups enable multi-level approval hierarchies where documents progress through organizational levels in strict order.
+
+Delivery & Notifications
+Signing invitations and document retrieval links delivered via email and SMS. Notification templates are fully customizable per tenant.
+
+Audit Trail & Compliance
+Complete evidence record per transaction. PAdES-sealed PDF output with qualified timestamps. Document integrity guaranteed from signing through long-term archival.
+
+Enterprise Platform Features
+Custom Branding
+Apply your organization's logo, colors, fonts, and background images to both the sender portal and the signer-facing interface. Branded PAdES cover page on finalized documents replaces default platform branding.
+
+Custom Domain
+Host the signing experience on your own branded URL - either a subdomain or a fully custom domain with dedicated SSL certificate.
+
+SMS & Email Customization
+Custom SMS sender name (up to 11 characters). Custom sender email domain. Full control over email and SMS template content, HTML layout, and footer. Option to suppress platform notifications entirely for API-driven flows.
+
+SSO / Active Directory Integration
+OIDC integration with Azure AD / Entra ID for single sign-on. Automated user provisioning and role assignment based on AD group claims.
+
+Organizational Structure & Roles
+Deep hierarchy support: Tenant - Department - Group - User. Role-based access control with Organization Admin, Department Admin, and Department User permission levels.
+
+Language Support
+Finnish, Swedish, and English across the portal, signing flows, and notification templates.
+
+Document Retention Control
+Configurable storage period from default 90 days up to 365 days.
+
+Identity Code Handling
+Configurable SSN/HETU collection - enable, make mandatory, or hash cryptographically in the final signature for privacy compliance.
+
+Signatory Suggestions
+Auto-complete for previously used contacts, including SSN-based lookup, to accelerate request creation.
+
+Watchers
+Add non-signing observers who receive progress notifications and can download the finalized document - used for compliance oversight or management visibility.
+
+Billable Features (Transactional)
+Signing Request - Strong Authentication (AES)
+Per-signatory fee for document signing using strong electronic identification. Includes identity verification, the signing ceremony, and document sealing with qualified timestamp.
+
+Signing Request - Light Authentication (SES)
+Per-signatory fee for signing via SMS OTP, email OTP, or hand-drawn signature. Includes document sealing.
+
+SMS Notification
+Per-message fee for every SMS sent by the platform - signing invitations, OTP codes, and document download notifications.
+
+Document Sealing (Standalone)
+Per-document fee for applying an organizational e-seal and qualified timestamp without routing to a human signatory. Used for automated bulk sealing of invoices, payslips, certificates, and official correspondence via API.
+
+File Conversion
+Per-document fee for automatic conversion of non-PDF uploads (Office files, images) to PDF/A format prior to signing.
+
+File Sharing
+Per-recipient fee for secure document delivery without a signing step. Recipients access files via an SMS OTP-protected link. Designed for distributing finalized or reference documents to parties who only need to view, not sign.
+
+Add-on Capabilities
+E-Forms (Dynamic Online Forms)
+Replace static PDFs with interactive HTML web forms that feed directly into the signing flow. Three modes available:
+
+Form Orders - private form links sent to specific recipients, with cascading logic and automatic metadata extraction to CRM/archive systems
+Open Forms - public-facing forms with unique URLs for embedding on websites (e.g., loan applications), with mandatory strong authentication before data entry
+Acroforms - standard fillable PDF fields completed during the signing flow, no custom development required
+Document Templating (API-driven)
+Automated PDF generation from JSON data via the API. The customer's backend sends key/value data, the platform merges it into a predefined PDF template and dispatches it for signature - zero manual steps.
+
+Bundle Signing
+Signatories approve multiple documents in a single authenticated session. A school principal with 50 documents authenticates once and signs them all.
+
+Mass Requests (CSV Import)
+Dispatch hundreds or thousands of signing requests at once via ZIP + CSV upload. Built for bulk operations like annual contract renewals or employee handbook distribution.
+
+Review Request (Reflection Period)
+Regulatory compliance feature that enforces a mandatory waiting period before signing is permitted. The recipient can read the full document immediately, but the Sign button remains disabled until the configured reflection period expires (overnight, 7 days, 14 days). Used by financial institutions for loan compliance - actively deployed with Aktia Bank.
+
+Professional Services
+Development and configuration services for custom integrations, custom e-form creation, maintenance requests, and manual database operations.
+
+This covers every enterprise-relevant capability mapped from the knowledge base and price list. The design agent can take this structure and format it into Allekirjoitus branding. Want me to adjust anything before you hand it off?
