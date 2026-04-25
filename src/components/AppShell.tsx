@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { BrandProvider } from '@/lib/brand-context'
 import { OnboardingForm } from '@/components/onboarding/OnboardingForm'
 import { EditorLayout } from '@/components/editor/EditorLayout'
-import type { BrandConfig } from '@/lib/brand-config'
+import type { BrandConfig, BrandContact } from '@/lib/brand-config'
 import type { KBDocument, TemplateType } from '@/lib/types'
 
 type KBSet = {
@@ -22,6 +22,7 @@ type OnboardingResult = {
   lang: 'en' | 'fi'
   customerName: string
   templateType: TemplateType
+  sender: BrandContact
 }
 
 export function AppShell({
@@ -37,8 +38,8 @@ export function AppShell({
     return (
       <BrandProvider brand={brand} lang={brand.defaultLanguage}>
         <OnboardingForm
-          onStart={(lang, customerName, templateType) =>
-            setSession({ lang, customerName, templateType })
+          onStart={(lang, customerName, templateType, sender) =>
+            setSession({ lang, customerName, templateType, sender })
           }
         />
       </BrandProvider>
@@ -60,6 +61,8 @@ export function AppShell({
         initialTemplateType={session.templateType}
         initialCustomerName={session.customerName}
         initialLang={session.lang}
+        sender={session.sender}
+        onBackToOnboarding={() => setSession(null)}
       />
     </BrandProvider>
   )

@@ -322,6 +322,31 @@ body {
 }
 
 /* ============================================================
+   SIDEBAR — back button
+   ============================================================ */
+.sidebar-back-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--font-body), 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: var(--brand-primary);
+  background: none;
+  border: 1.6px solid var(--brand-gray-border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.sidebar-back-btn:hover {
+  border-color: var(--brand-primary);
+  background: rgba(239, 66, 36, 0.04);
+}
+
+/* ============================================================
    ONBOARDING — uses same design tokens as templates
    ============================================================ */
 .onboarding-lang-btn,
@@ -349,6 +374,16 @@ body {
   border: 1.6px solid var(--brand-primary);
   background: var(--brand-primary);
   color: #ffffff;
+}
+
+.onboarding-field-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--brand-gray-500);
+  margin-bottom: 6px;
 }
 
 .onboarding-input {

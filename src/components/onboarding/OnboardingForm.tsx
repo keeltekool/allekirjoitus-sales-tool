@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useBrand } from '@/lib/brand-context'
 import { AllekirjoitusLogo } from '@/components/shared/AllekirjoitusLogo'
+import type { BrandContact } from '@/lib/brand-config'
 import type { TemplateType } from '@/lib/types'
 
 const TEMPLATE_CARDS: { type: TemplateType; descEn: string; descFi: string }[] = [
@@ -31,12 +32,13 @@ const TEMPLATE_CARDS: { type: TemplateType; descEn: string; descFi: string }[] =
 export function OnboardingForm({
   onStart,
 }: {
-  onStart: (lang: 'en' | 'fi', customerName: string, templateType: TemplateType) => void
+  onStart: (lang: 'en' | 'fi', customerName: string, templateType: TemplateType, sender: BrandContact) => void
 }) {
   const { brand } = useBrand()
   const [lang, setLang] = useState<'en' | 'fi'>(brand.defaultLanguage as 'en' | 'fi')
   const [customerName, setCustomerName] = useState('')
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateType>('enterprise_offer')
+  const [sender, setSender] = useState<BrandContact>({ ...brand.contact })
 
   const localeStrings = brand.locale[lang]
 
@@ -47,7 +49,6 @@ export function OnboardingForm({
 
   return (
     <div className="page" style={{ maxWidth: '820px', margin: '0 auto', padding: '48px' }}>
-      {/* Header — same as template output */}
       <header className="header">
         <AllekirjoitusLogo height={brand.logos.headerHeight} />
         <div className="header__meta">
@@ -55,7 +56,6 @@ export function OnboardingForm({
         </div>
       </header>
 
-      {/* Title block — Barlow Condensed heading */}
       <div className="title-block">
         <div className="title-block__eyebrow">
           {lang === 'fi' ? 'Uusi asiakirja' : 'New Document'}
@@ -78,7 +78,7 @@ export function OnboardingForm({
         ))}
       </div>
 
-      {/* Customer name — brand card style */}
+      {/* Customer name */}
       <div className="section" style={{ marginBottom: '32px' }}>
         <h2 className="section__heading" style={{ fontSize: '24px' }}>
           {lang === 'fi' ? 'Asiakkaan nimi' : 'Customer Name'}
@@ -92,7 +92,60 @@ export function OnboardingForm({
         />
       </div>
 
-      {/* Template selector — brand card style */}
+      {/* Sender / Contact person */}
+      <div className="section" style={{ marginBottom: '32px' }}>
+        <h2 className="section__heading" style={{ fontSize: '24px' }}>
+          {lang === 'fi' ? 'Lähettäjä' : 'Sender'}
+        </h2>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+          <div>
+            <label className="onboarding-field-label">
+              {lang === 'fi' ? 'Nimi' : 'Name'}
+            </label>
+            <input
+              type="text"
+              value={sender.name}
+              onChange={e => setSender(s => ({ ...s, name: e.target.value }))}
+              className="onboarding-input"
+            />
+          </div>
+          <div>
+            <label className="onboarding-field-label">
+              {lang === 'fi' ? 'Titteli' : 'Title'}
+            </label>
+            <input
+              type="text"
+              value={sender.title}
+              onChange={e => setSender(s => ({ ...s, title: e.target.value }))}
+              className="onboarding-input"
+            />
+          </div>
+          <div>
+            <label className="onboarding-field-label">
+              {lang === 'fi' ? 'Puhelin' : 'Phone'}
+            </label>
+            <input
+              type="text"
+              value={sender.phone}
+              onChange={e => setSender(s => ({ ...s, phone: e.target.value }))}
+              className="onboarding-input"
+            />
+          </div>
+          <div>
+            <label className="onboarding-field-label">
+              {lang === 'fi' ? 'Sähköposti' : 'Email'}
+            </label>
+            <input
+              type="text"
+              value={sender.email}
+              onChange={e => setSender(s => ({ ...s, email: e.target.value }))}
+              className="onboarding-input"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Template selector */}
       <div className="section">
         <h2 className="section__heading" style={{ fontSize: '24px' }}>
           {lang === 'fi' ? 'Asiakirjan tyyppi' : 'Template Type'}
@@ -129,11 +182,11 @@ export function OnboardingForm({
         </div>
       </div>
 
-      {/* CTA — brand dark band style */}
+      {/* CTA */}
       <div
         className="cta-band"
         style={{ cursor: 'pointer' }}
-        onClick={() => onStart(lang, customerName || '[Customer Name]', selectedTemplate)}
+        onClick={() => onStart(lang, customerName || '[Customer Name]', selectedTemplate, sender)}
       >
         <div className="cta-band__text">
           <h2 className="cta-band__heading" style={{ fontSize: '28px' }}>

@@ -7,6 +7,7 @@ import { EnterpriseOffer } from '@/components/templates/EnterpriseOffer'
 import { FeatureIntroduction } from '@/components/templates/FeatureIntroduction'
 import { PricingProposal } from '@/components/templates/PricingProposal'
 import { PriceList } from '@/components/templates/PriceList'
+import type { BrandContact } from '@/lib/brand-config'
 import type { KBDocument } from '@/lib/types'
 
 export function EditorLayout({
@@ -17,6 +18,8 @@ export function EditorLayout({
   initialTemplateType = 'enterprise_offer',
   initialCustomerName = '[Customer Name]',
   initialLang = 'en',
+  sender,
+  onBackToOnboarding,
 }: {
   overviewKB: KBDocument
   detailKB: KBDocument
@@ -25,6 +28,8 @@ export function EditorLayout({
   initialTemplateType?: import('@/lib/types').TemplateType
   initialCustomerName?: string
   initialLang?: 'en' | 'fi'
+  sender?: BrandContact
+  onBackToOnboarding?: () => void
 }) {
   const { brand, locale, lang } = useBrand()
   const editor = useEditorState(createInitialState(initialTemplateType, initialLang, initialCustomerName))
@@ -60,6 +65,7 @@ export function EditorLayout({
             pricing={editor.state.pricing}
             showCustomerContext={editor.state.customBlocks.customerContext}
             termsKB={showTerms ? termsKB : undefined}
+            sender={sender}
             lang={lang}
           />
         )
@@ -74,6 +80,7 @@ export function EditorLayout({
             layers={editor.state.layers}
             pricing={editor.state.pricing}
             termsKB={showTerms ? termsKB : undefined}
+            sender={sender}
             lang={lang}
           />
         )
@@ -87,6 +94,7 @@ export function EditorLayout({
             pricing={editor.state.pricing}
             showCustomerContext={editor.state.customBlocks.customerContext}
             termsKB={showTerms ? termsKB : undefined}
+            sender={sender}
             lang={lang}
           />
         )
@@ -114,6 +122,7 @@ export function EditorLayout({
         onToggleCustomBlock={editor.toggleCustomBlock}
         onToggleTerms={editor.toggleTerms}
         onSetTemplateType={editor.setTemplateType}
+        onBackToOnboarding={onBackToOnboarding}
       />
       <main style={{ flex: 1, overflow: 'auto' }}>
         {renderTemplate()}

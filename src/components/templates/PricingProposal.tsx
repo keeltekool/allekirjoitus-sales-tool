@@ -9,6 +9,7 @@ import { EditToggle } from '@/components/shared/EditToggle'
 import { PricingBlock } from '@/components/pricing/PricingBlock'
 import { TermsBlock } from '@/components/content/TermsBlock'
 import { Deletable } from '@/components/shared/Deletable'
+import type { BrandContact } from '@/lib/brand-config'
 import type { KBDocument, PricingConfig } from '@/lib/types'
 
 const INTRO = {
@@ -52,6 +53,7 @@ export function PricingProposal({
   pricing,
   showCustomerContext = false,
   termsKB,
+  sender,
   lang = 'en',
 }: {
   customerName: string
@@ -61,6 +63,7 @@ export function PricingProposal({
   pricing: PricingConfig
   showCustomerContext?: boolean
   termsKB?: KBDocument
+  sender?: BrandContact
   lang?: string
 }) {
   const l = lang as 'en' | 'fi'
@@ -131,7 +134,7 @@ export function PricingProposal({
         {/* Service Terms */}
         {termsKB && <TermsBlock terms={termsKB} lang={lang} />}
 
-        <CTABand />
+        <CTABand sender={sender} />
         <Footer />
       </div>
     </>

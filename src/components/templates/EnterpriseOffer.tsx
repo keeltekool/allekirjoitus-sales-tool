@@ -9,6 +9,7 @@ import { LayerHeader } from '@/components/content/LayerHeader'
 import { KBSection } from '@/components/content/KBSection'
 import { PricingBlock } from '@/components/pricing/PricingBlock'
 import { TermsBlock } from '@/components/content/TermsBlock'
+import type { BrandContact } from '@/lib/brand-config'
 import type { KBDocument, LayerConfig, PricingConfig } from '@/lib/types'
 import { PART_TO_LAYER } from '@/lib/types'
 
@@ -23,6 +24,7 @@ export function EnterpriseOffer({
   pricing,
   showCustomerContext = false,
   termsKB,
+  sender,
   lang = 'en',
 }: {
   kb: KBDocument
@@ -35,6 +37,7 @@ export function EnterpriseOffer({
   pricing?: PricingConfig
   showCustomerContext?: boolean
   termsKB?: KBDocument
+  sender?: BrandContact
   lang?: string
 }) {
   const activeParts = kb.parts.filter(part => {
@@ -96,7 +99,7 @@ export function EnterpriseOffer({
 
         {termsKB && <TermsBlock terms={termsKB} lang={lang} />}
 
-        <CTABand />
+        <CTABand sender={sender} />
         <Footer />
       </div>
     </>

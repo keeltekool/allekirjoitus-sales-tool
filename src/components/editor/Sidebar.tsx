@@ -11,6 +11,7 @@ type SidebarProps = {
   onToggleCustomBlock: (block: 'customerContext' | 'whatsIncluded') => void
   onToggleTerms: () => void
   onSetTemplateType: (type: TemplateType) => void
+  onBackToOnboarding?: () => void
 }
 
 function Toggle({ checked, onChange, label }: { checked: boolean; onChange: () => void; label: string }) {
@@ -74,7 +75,7 @@ const TEMPLATE_TYPES: TemplateType[] = [
   'price_list',
 ]
 
-export function Sidebar({ state, onToggleLayer, onSetDepth, onTogglePricing, onToggleCustomBlock, onToggleTerms, onSetTemplateType }: SidebarProps) {
+export function Sidebar({ state, onToggleLayer, onSetDepth, onTogglePricing, onToggleCustomBlock, onToggleTerms, onSetTemplateType, onBackToOnboarding }: SidebarProps) {
   const { locale } = useBrand()
   const s = locale.sidebar
   const showLayers = state.templateType !== 'price_list' && state.templateType !== 'pricing_proposal'
@@ -97,6 +98,15 @@ export function Sidebar({ state, onToggleLayer, onSetDepth, onTogglePricing, onT
         fontSize: '14px',
       }}
     >
+      {onBackToOnboarding && (
+        <button
+          onClick={onBackToOnboarding}
+          className="sidebar-back-btn"
+        >
+          ‹ {locale.sidebar.overview === 'Yleiskatsaus' ? 'Asetukset' : 'Settings'}
+        </button>
+      )}
+
       <SectionLabel label="Template" />
       <select
         value={state.templateType}
