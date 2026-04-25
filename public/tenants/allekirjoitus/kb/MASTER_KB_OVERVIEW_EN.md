@@ -162,79 +162,135 @@ How you control the signing process. Base workflow capabilities are included and
 
 ## 3.1 Signature Request Templates
 
-Predefined workflow blueprints that standardize business processes across the organization. Each template pre-configures authentication strength, delivery methods, signing order, reminder schedules, and compliance rules. Different templates for different use cases — one for employment contracts, another for NDAs, a third for loan agreements — all under one tenant.
+Pre-configured workflow blueprints for each business process.
 
-**Status:** Included. Multiple templates: Configuration work.
+**What they do:** Lock in authentication strength, delivery method, signing order, reminders, and compliance rules per process type.
+
+**Example:** One template for employment contracts (sequential, SSN mandatory), another for NDAs (simultaneous, standard), a third for loan agreements (reflection period, strong auth).
+
+**Default:** One generic template included. Multiple templates via configuration work.
 
 ## 3.2 Signing Order
 
-Simultaneous signing (all at once, any order) for straightforward agreements. Sequential signing (strict order, tier by tier) for approval chains. Mixed mode for complex hierarchies — multiple signers at the same tier, sequential between tiers. If any signer rejects, the entire workflow halts immediately.
+Control the sequence of signatures.
+
+**Simultaneous:** All signatories sign in any order. For NDAs, standard agreements.
+
+**Sequential:** Tier by tier — employee first, then manager, then director. For approval chains.
+
+**Mixed:** Multiple signers per tier (any order within), sequential between tiers.
+
+**On rejection:** Entire workflow halts. Upper tiers never notified.
 
 **Status:** Included. Configurable per request.
 
 ## 3.3 Signatory Groups & Approval Hierarchies
 
-Multi-level organizational approval flows. Group signatories by management tier so documents progress through the hierarchy in order. If a lower-level signer rejects, upper levels are never notified — the workflow stops at the rejection point.
+Multi-level approval flows grouped by management tier.
+
+**How it works:** Documents progress through the hierarchy in order. Lower-level rejection stops the flow — upper levels never notified.
 
 **Status:** Configurable. Enabled per template.
 
 ## 3.4 Signatory Forwarding
 
-A designated signer can delegate the signing task to an authorized colleague when they lack appropriate signing rights (e.g., contract value exceeds their mandate). The workflow continues without restarting. The full delegation chain is recorded in the audit trail.
+Delegation when a signer lacks authority.
+
+**How it works:** Signer exits, enters delegate's details, workflow continues without restart. Full delegation chain recorded in audit trail.
 
 **Status:** Included. Active by default.
 
 ## 3.5 Review Request (Reflection Period)
 
-Regulatory compliance workflow that enforces a mandatory waiting period before signing is permitted. The recipient can read the full document immediately, but the Sign button remains disabled until the configured period expires (overnight, 7 days, 14 days). Designed for financial sector compliance — actively deployed with banking customers for consumer loan agreements.
+Mandatory waiting period before signing — for regulatory compliance.
+
+**Periods:** Overnight (next morning 8:00 AM), 7 days, 14 days, custom.
+
+**How it works:** Signer reads immediately, but Sign button disabled until period expires.
+
+**Used for:** Banking loan compliance — Finnish consumer protection law mandates thinking time for credit products.
 
 **Status:** Configurable. Enabled per template.
 
 ## 3.6 Authentication Strength Control
 
-Granular per-request control over identity verification, split between document viewing and signing. Reading authentication can be set from high (bank ID required to open) to none (open freely via link). Signing authentication must be equal to or higher than reading strength.
+Separate identity requirements for viewing vs signing.
 
-**Status:** Included. Configurable per request and per template.
+**High:** Bank ID required to both view and sign.
+
+**Medium:** SMS OTP for viewing and signing.
+
+**Low:** Email link to view, email verification to sign.
+
+**None (viewing only):** Open freely. Signing always requires at least low.
+
+**Status:** Included. Configurable per request.
 
 ## 3.7 Expiry & Reminders
 
-Every request carries a hard expiration deadline (7, 14, 30, or 90 days — configurable maximum per tenant). Automatic reminders chase pending signatories at configurable intervals via email or SMS. Manual reminders available on-demand from the portal.
+Hard deadlines and automatic follow-up on every request.
+
+**Expiry:** Sender selects 7, 14, 30, or 90 days.
+
+**Auto reminders:** 2 days after dispatch + 1 day before expiry (default). Custom intervals available.
+
+**Manual reminders:** On-demand from portal.
 
 **Status:** Included. Schedule configurable.
 
 ## 3.8 Attachments & Reference Documents
 
-Attach supporting files (terms and conditions, reference materials, appendices) that signatories can view during the signing ceremony but are not cryptographically signed. Keeps the signed document clean while providing full context.
+Supporting files alongside the signed document.
+
+**What:** Terms, appendices, reference materials. Viewable during signing ceremony.
+
+**Not signed:** Attachments are NOT cryptographically signed — keeps the main document clean.
 
 **Status:** Included.
 
 ## 3.9 Signer Document Upload
 
-Require signatories to upload supporting documents (ID copy, diploma, driving license) during the signing ceremony before they can proceed to sign. Collected documents are stored alongside the signed agreement.
+Require signers to upload documents before they can sign.
+
+**Use case:** ID copies, diplomas, driving licenses, certificates — collected and stored alongside the signed agreement.
 
 **Status:** Configurable. Enabled per template.
 
 ## 3.10 Post-Sign Redirect
 
-Automatically redirect signatories to an external URL after completing their signature — back to the customer's CRM, onboarding portal, or confirmation page. Seamless digital journey with no broken handoff.
+Automatic redirect after signing completes.
+
+**Where:** Back to your CRM, onboarding portal, confirmation page, or next process step.
 
 **Status:** Included. Configurable per request.
 
 ## 3.11 Watchers / Observers
 
-Add non-signing stakeholders who receive progress notifications and can download the finalized document. Used for compliance oversight, management visibility, or keeping legal counsel in the loop without adding them as signatories.
+Non-signing stakeholders who stay informed.
+
+**What they get:** Progress notifications at each stage + final document download.
+
+**Use case:** Compliance oversight, management visibility, keeping legal counsel informed.
 
 **Status:** Configurable. Enabled per template.
 
 ## 3.12 Custom Metadata
 
-Tag signature requests with structured metadata fields for downstream processing. Enables automatic routing of completed documents to the right archive, CRM record, or business process via API/webhooks.
+Structured tags for downstream routing.
+
+**What:** Key-value fields per request (e.g., policy number, HR case ID, contract reference).
+
+**Where it flows:** API/webhooks → automatic routing to archive, CRM, or business process.
 
 **Status:** Configurable. Enabled per tenant.
 
 ## 3.13 Bundle Signing
 
-Signatories approve multiple documents in a single authenticated session. Authenticate once, sign a queue of pending documents in one go. Built for managers, executives, or HR staff who regularly process high volumes. Up to 50 documents per session.
+Sign multiple documents in one authenticated session.
+
+**How it works:** Authenticate once, sign a queue of up to 50 documents. Each gets its own seal and timestamp.
+
+**Built for:** Managers, executives, HR staff with high-volume approval queues.
 
 **Status:** Configurable. Enabled per tenant.
 
@@ -246,49 +302,105 @@ These capabilities are configured during your Enterprise onboarding. Your organi
 
 ## 4.1 Custom Branding
 
-Apply your organization's logo, colors, fonts, and background images to both the sender portal and the signer-facing interface. Branded PAdES cover page on finalized documents replaces default platform branding. Per-department branding variations available. Signers may not realize a third-party platform is involved.
+Your visual identity across every touchpoint.
+
+**Portal:** Your logo, colors, fonts, background on the sender interface.
+
+**Signer pages:** Your branding on every page the signer sees. Signers may not realize a third-party platform is involved.
+
+**Signed PDFs:** Your company logo on the PAdES cover page with signatory metadata.
+
+**Per-department:** Different branding per business unit if needed.
 
 **Status:** One-time setup.
 
 ## 4.2 Custom Domain
 
-Host the signing experience on your own branded URL — either a standard subdomain (companyname.allekirjoitus.fi, included) or a fully custom domain (e.g., signing.yourcompany.fi) with dedicated SSL certificate.
+Your branded URL for the signing experience.
+
+**Standard:** companyname.allekirjoitus.fi — included.
+
+**Custom:** signing.yourcompany.fi — your own domain with dedicated SSL.
 
 **Status:** Subdomain included. Custom domain: Configuration work.
 
 ## 4.3 SSO / Active Directory Integration
 
-OIDC integration with Azure AD / Entra ID for single sign-on. Employees click AD Login and are redirected to your organization's login — if already signed into Microsoft, no password entry needed. New employees are auto-provisioned on first login. Role changes in AD automatically update portal permissions. Removing from AD group revokes access immediately.
+Seamless identity management through Azure AD / Entra ID.
+
+**Login:** Employees click AD Login — instant if already signed into Microsoft.
+
+**Provisioning:** New employees auto-created on first login with correct role and department.
+
+**Updates:** Role changes in AD sync automatically to portal permissions.
+
+**Offboarding:** Remove from AD group → portal access revoked immediately.
 
 **Status:** Configuration work.
 
 ## 4.4 SMS & Email Customization
 
-Custom SMS sender name (up to 11 characters). Custom sender email domain. Full control over email subject, body, HTML layout, footer, and legal disclaimers. Dynamic placeholders auto-inject recipient data, document names, and signing links. Multiple notification templates for different contract types. Option to suppress platform notifications entirely for API-driven flows.
+Full control over every communication your signers receive.
 
-**Status:** Included in branding setup. Additional templates: Configuration work.
+**Sender identity:** Your company name for SMS, your domain for email.
+
+**Content:** Full control over subject, body, HTML layout, footer, legal disclaimers.
+
+**Dynamic fields:** Auto-inject recipient name, document title, signing link, expiry date.
+
+**Multiple templates:** Different content for different contract types.
+
+**API flows:** Option to suppress platform notifications entirely.
+
+**Status:** Included in branding setup.
 
 ## 4.5 Organizational Structure & Roles
 
-Your dedicated tenant mirrors your organization's structure: Tenant → Department → Group → User. Role-based access control with Organization Admin (full visibility), Department Admin (department scope), and Department User (own requests only). Mapped from Active Directory automatically.
+Your tenant mirrors your organization.
+
+**Hierarchy:** Tenant → Department → Group → User. Synced from AD.
+
+**Organization Admin:** Full visibility, user management, configuration.
+
+**Department Admin:** Department scope, manages department users.
+
+**Department User:** Own requests only.
 
 **Status:** Included.
 
 ## 4.6 Document Retention Control
 
-Configurable storage period from default 90 days up to 365 days. Documents are permanently deleted after expiry — not recoverable. Automatic archiving can be configured to push completed documents to your archive system (Zefort, Arkinet, or custom) via API before the retention window closes.
+How long signed documents are stored.
+
+**Default:** 90 days from completion.
+
+**Maximum:** 365 days.
+
+**After expiry:** Permanently deleted — not recoverable.
+
+**Auto-archiving:** Push to Zefort, Arkinet, or custom system via API.
 
 **Status:** Configuration work.
 
 ## 4.7 Identity Code Handling
 
-Configurable SSN/HETU collection — disable, make optional, make mandatory, or hash cryptographically in the final signature for GDPR data minimization. Settings can be locked at template level so individual senders cannot override your organization's privacy policy.
+Four modes for SSN/HETU collection.
+
+**Disabled:** SSN field hidden. No identity code collected.
+
+**Optional:** Sender decides per signatory. Strict match enforced if provided.
+
+**Mandatory:** Cannot dispatch without SSN for every signatory.
+
+**Hashed:** Cryptographic hash in PDF instead of plain-text SSN.
 
 **Status:** Included (toggle). Enforcement: Configuration work.
 
 ## 4.8 Signatory Suggestions
 
-Auto-complete for previously used contacts when adding signatories to new requests. Includes SSN-based lookup. Speeds up repeat workflows — no manual re-entry of recurring signer details.
+Auto-complete for repeat contacts.
+
+**How it works:** Previously used contacts suggested when adding signatories. Includes SSN-based lookup.
 
 **Status:** Included.
 
@@ -300,61 +412,99 @@ Capabilities you activate on top of your Enterprise subscription, each with its 
 
 ## 5.1 E-Forms: Form Orders
 
-Replace static PDF filling with interactive web forms. Your employee selects a pre-built form in the portal, sends a private link to the recipient. The recipient authenticates, fills a dynamic web form with cascading logic (fields appear based on previous answers, supports 180+ fields), submits, and the platform generates a populated PDF and routes directly to signing. Form field values are extractable as structured metadata to your CRM/archive via API.
+Interactive web forms that replace static PDFs and route directly to signing.
+
+**Flow:** Employee sends form link → recipient authenticates → fills dynamic form (cascading logic, 180+ fields) → PDF generated → signing ceremony.
+
+**Data extraction:** All field values available as structured metadata to CRM/archive via API.
 
 **Status:** Add-on (monthly per form + development work).
 
 ## 5.2 E-Forms: Open Forms
 
-Public-facing, self-service forms with a unique URL you embed on your website. The visitor clicks, authenticates with strong bank ID (mandatory), fills the form, and is redirected straight to signing in one continuous flow. No invitation email, no waiting. Supports your branded domain.
+Public-facing self-service forms for your website.
+
+**Flow:** Visitor clicks link → authenticates with strong bank ID → fills form → redirected straight to signing. No email wait.
+
+**Use case:** Loan applications, insurance claims, public-facing onboarding.
 
 **Status:** Add-on (monthly per form + development work).
 
 ## 5.3 E-Forms: Acroforms
 
-If you already have fillable PDFs (standard Acroform format), attach them to a signature request. The signer fills in the fields directly during the signing ceremony. No custom development needed, no monthly form fee. Currently supports single-signatory requests only.
+Use your existing fillable PDFs directly in the signing flow.
+
+**How:** Attach fillable PDF to a request. Signer fills fields during the ceremony.
+
+**No development needed.** No monthly fee. Single-signatory only.
 
 **Status:** Included in transaction cost.
 
 ## 5.4 Document Templating (API-driven)
 
-Automated PDF generation from JSON data via the API. Your backend system sends key/value data with a template ID, the platform merges it into a predefined PDF template, generates a finalized document, and dispatches for signing — zero manual steps, zero portal interaction.
+Automated PDF generation from your backend systems.
+
+**Flow:** Your system sends JSON data + template ID via API → platform merges into PDF → dispatches for signing.
+
+**Zero manual steps.** Zero portal interaction.
 
 **Status:** Add-on (per transaction + development work for setup).
 
 ## 5.5 Mass Requests (CSV Import)
 
-Dispatch hundreds or thousands of signing requests at once via ZIP + CSV upload. The platform matches documents to recipients and dispatches all requests automatically. Built for annual contract renewals, employee handbook distribution, supplier agreement rollouts, and policy acknowledgements.
+Bulk dispatch — hundreds or thousands of requests at once.
+
+**How:** Upload ZIP of documents + CSV mapping each to its signatory.
+
+**Use case:** Annual contract renewals, handbook distribution, supplier rollouts.
 
 **Status:** Standard transaction fees per request.
 
 ## 5.6 Document Sealing (Standalone)
 
-Apply your organization's official digital seal to PDF documents without any human signatory — the digital equivalent of a company stamp. Every sealed document receives a qualified timestamp proving integrity and origin. API-driven for automated bulk processing of invoices, payslips, certificates, and official correspondence.
+Digital company stamp — no human signatory needed.
+
+**What:** Organizational e-seal + qualified timestamp on PDF documents.
+
+**Use case:** Bulk sealing of invoices, payslips, certificates. API-driven.
 
 **Status:** Add-on (per document).
 
 ## 5.7 File Conversion
 
-Your team uploads Office files (Word, Excel) or images — the platform automatically converts them to archival-grade PDF/A format before the signing process begins. No manual conversion step.
+Automatic conversion of non-PDF uploads to PDF/A.
+
+**Supports:** Office files (Word, Excel) and images.
 
 **Status:** Add-on (per document).
 
 ## 5.8 File Sharing
 
-Securely distribute documents to recipients who need to view but not sign. The document is delivered via a link — the recipient verifies identity with SMS OTP before accessing. A controlled alternative to email attachments for sensitive materials.
+Secure document delivery without a signing step.
+
+**Access:** Link + SMS OTP verification (two-factor).
+
+**Use case:** Distributing finalized or reference documents to view-only parties.
 
 **Status:** Add-on (per recipient).
 
 ## 5.9 API-driven Workflow Automation
 
-Full end-to-end signing automation. Your CRM, ERP, or HR system creates requests, receives real-time status events via webhooks, and archives signed documents — all system-to-system, without anyone touching the portal. Existing integrations built for Sympa HR, Salesforce Commerce Cloud, Microsoft Dynamics CRM, Zefort, and Arkinet.
+Full end-to-end signing automation — system-to-system.
 
-**Status:** Included (API access). Configuration work for custom integrations.
+**Enables:** Programmatic request creation, webhook status updates, automated archiving.
+
+**Existing integrations:** Sympa HR, Salesforce Commerce Cloud, Microsoft Dynamics CRM, Zefort, Arkinet.
+
+**Status:** API access included. Custom integrations: Configuration work.
 
 ## 5.10 Professional Services
 
-Development and configuration services for custom integrations, custom e-form creation, workflow template setup, and tenant configuration. Specialist consultation available for architecture, project management, and solution design. Workload estimate presented and approved before any work begins.
+Expert assistance for your implementation.
+
+**Development:** Custom integrations, form development, template setup. Min 0.5h.
+
+**Consultation:** Architecture, project management, solution design.
 
 **Status:** Hourly rate — see pricing block.
 
@@ -365,19 +515,46 @@ Development and configuration services for custom integrations, custom e-form cr
 How different industries use the platform's capabilities.
 
 ## Banking & Finance
-Sequential signing with review/reflection periods for regulatory compliance. Dynamic metadata tracking signatory roles (Applicant, Guarantor). Automated archiving to secure vaults upon completion. Open forms for public-facing loan applications with mandatory strong authentication.
+
+**Signing:** Sequential with review/reflection periods for regulatory compliance.
+
+**Tracking:** Dynamic metadata for signatory roles (Applicant, Guarantor).
+
+**Archiving:** Automated push to secure vaults upon completion.
+
+**Public-facing:** Open forms for loan applications with mandatory strong authentication.
 
 ## Human Resources
-Sequential approval chains (HR initiates — candidate signs — manager countersigns). Signer document upload for collecting diplomas and ID copies during onboarding. Mass requests for distributing annual policy updates or handbook acknowledgments across the organization.
+
+**Onboarding:** Sequential chains — HR initiates → candidate signs → manager countersigns.
+
+**Document collection:** Signer uploads diplomas and ID copies during signing ceremony.
+
+**Bulk operations:** Mass requests for annual policy updates and handbook acknowledgments.
 
 ## Legal & Compliance
-Signatory status views for legal counsel to verify all other parties have signed before adding final signature. Watchers for compliance oversight. Attachments for terms and conditions that accompany but do not form part of the signed document.
+
+**Oversight:** Signatory status views for legal counsel to verify completion before final signature.
+
+**Monitoring:** Watchers for compliance visibility without signing rights.
+
+**Context:** Attachments for T&C that accompany but aren't part of the signed document.
 
 ## Procurement & Sales
-Simultaneous signing for rapid NDAs and straightforward agreements. Mass requests for supplier contract rollouts. Signatory forwarding when the designated signer needs to delegate to a colleague with appropriate authority.
+
+**Speed:** Simultaneous signing for rapid NDAs and straightforward agreements.
+
+**Scale:** Mass requests for supplier contract rollouts.
+
+**Flexibility:** Signatory forwarding when delegates are needed.
 
 ## Operations & Administration
-Standalone document sealing for bulk processing of invoices, certificates, and official correspondence. Bundle signing for executives processing high-volume approval queues. Document templating for automated generation of standardized documents from backend systems.
+
+**Automation:** Document sealing for bulk invoices, certificates, official correspondence.
+
+**Efficiency:** Bundle signing for executives with high-volume approval queues.
+
+**Integration:** Document templating for automated generation from backend systems.
 
 ---
 
