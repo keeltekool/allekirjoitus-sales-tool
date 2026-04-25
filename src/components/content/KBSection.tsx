@@ -11,18 +11,37 @@ function renderMarkdown(text: string): string {
 }
 
 export function KBSection({ section }: { section: KBSectionType }) {
+  const hasTable = section.content.some(b => b.type === 'table')
+  const hasParagraph = section.content.some(b => b.type === 'paragraph')
+
   return (
-    <div className="section">
-      <h2 className="section__heading">
+    <div
+      style={{
+        background: '#ffffff',
+        border: '1.6px solid var(--brand-gray)',
+        borderRadius: '20px',
+        padding: '28px 32px',
+        marginBottom: '24px',
+      }}
+    >
+      <div
+        style={{
+          fontFamily: 'var(--font-heading), Helvetica, Arial, sans-serif',
+          fontWeight: 600,
+          fontSize: '20px',
+          color: 'var(--brand-text-black-pure)',
+          marginBottom: hasTable || hasParagraph ? '12px' : '0',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          flexWrap: 'wrap' as const,
+        }}
+      >
         {section.title}
-        {section.status && (
-          <>
-            {' '}
-            <StatusBadge label={section.status} />
-          </>
-        )}
-      </h2>
-      <div className="section__body">
+        {section.status && <StatusBadge label={section.status} />}
+      </div>
+
+      <div style={{ fontSize: '17px', lineHeight: 1.65, color: 'var(--brand-text)' }}>
         {section.content.map((block, i) => {
           switch (block.type) {
             case 'paragraph':
@@ -31,6 +50,7 @@ export function KBSection({ section }: { section: KBSectionType }) {
                   key={i}
                   contentEditable
                   suppressContentEditableWarning
+                  style={{ margin: '0 0 10px' }}
                   dangerouslySetInnerHTML={{ __html: renderMarkdown(block.text) }}
                 />
               )
@@ -42,10 +62,11 @@ export function KBSection({ section }: { section: KBSectionType }) {
                   key={i}
                   style={{
                     fontWeight: 600,
-                    fontSize: '18px',
-                    marginTop: '24px',
-                    marginBottom: '12px',
-                    color: 'var(--brand-text-black-pure)',
+                    fontSize: '16px',
+                    marginTop: '20px',
+                    marginBottom: '8px',
+                    color: 'var(--brand-primary)',
+                    fontFamily: 'var(--font-heading), Helvetica, Arial, sans-serif',
                   }}
                 >
                   {block.text}
@@ -66,7 +87,7 @@ export function KBSection({ section }: { section: KBSectionType }) {
               )
             case 'status':
               return (
-                <p key={i} style={{ marginTop: '12px' }}>
+                <p key={i} style={{ marginTop: '8px', marginBottom: '0' }}>
                   <StatusBadge label={block.label} />
                 </p>
               )
