@@ -22,6 +22,10 @@ export function EnterpriseOfferPage({
     ? `${today.getDate()}.${today.getMonth() + 1}.${today.getFullYear()}`
     : today.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
 
+  const intro = lang === 'fi'
+    ? 'Allekirjoitus.fi on SK ID Solutionsin pilvipohjainen sähköinen allekirjoitusalusta, joka on suunniteltu suomalaisille ja pohjoismaisille yrityksille. Tämä tarjous kuvaa, mitä Enterprise-tilauksesi sisältää ensimmäisestä päivästä alkaen, miten allekirjoitustyönkulut voidaan konfiguroida liiketoimintaprosesseillesi ja mitä lisäominaisuuksia on saatavilla tarpeidesi kehittyessä.'
+    : 'Allekirjoitus.fi is a cloud-based electronic signing platform by SK ID Solutions, purpose-built for enterprise organizations in Finland and the Nordics. This proposal outlines what your Enterprise subscription includes from day one, how signing workflows can be configured for your specific business processes, and what additional capabilities are available as your needs evolve.'
+
   return (
     <EnterpriseOffer
       kb={kb}
@@ -29,8 +33,9 @@ export function EnterpriseOfferPage({
       date={date}
       eyebrow={locale.eyebrow.enterprise_offer}
       heading={`${brandName} Enterprise`}
+      intro={intro}
       layers={{
-        defaults: true,
+        defaults: false,
         core: true,
         workflows: true,
         config: false,

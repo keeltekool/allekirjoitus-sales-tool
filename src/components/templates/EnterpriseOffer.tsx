@@ -16,6 +16,7 @@ export function EnterpriseOffer({
   date,
   eyebrow,
   heading,
+  intro,
   layers,
   lang = 'en',
 }: {
@@ -24,6 +25,7 @@ export function EnterpriseOffer({
   date: string
   eyebrow: string
   heading: string
+  intro?: string
   layers: LayerConfig
   lang?: string
 }) {
@@ -39,6 +41,14 @@ export function EnterpriseOffer({
       <div className="page">
         <Header date={date} />
         <TitleBlock eyebrow={eyebrow} heading={heading} customer={customerName} />
+
+        {intro && (
+          <div className="section">
+            <div className="section__body" contentEditable suppressContentEditableWarning>
+              <p>{intro}</p>
+            </div>
+          </div>
+        )}
 
         {activeParts.map(part => (
           <div key={part.number}>

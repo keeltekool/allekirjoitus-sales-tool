@@ -13,7 +13,7 @@ export default async function BrandHomePage({
   if (!brand) notFound()
 
   const lang = 'en'
-  const kb = loadKB(brand.kb.detail[lang as keyof typeof brand.kb.detail])
+  const kb = loadKB(brand.kb.overview[lang as keyof typeof brand.kb.overview])
 
   return (
     <EnterpriseOfferPage
