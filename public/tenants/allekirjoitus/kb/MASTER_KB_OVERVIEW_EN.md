@@ -20,19 +20,41 @@ What you get on day one as an Enterprise customer. Your dedicated tenant is conf
 
 ## 1.1 Signing & Authentication Defaults
 
-Your Enterprise subscription includes eIDAS-compliant Advanced Electronic Signatures (AES), strong authentication via the Finnish Trust Network (all major banks and Mobile Certificate) and Swedish BankID, email-based signing invitations, configurable signing order (simultaneous or sequential), and unlimited user accounts. You can extend to Qualified Electronic Signatures (QES) via national ID cards, Light Signing Methods (SMS OTP, Email OTP, InkSign) for lower-risk scenarios, and Nordic-Baltic authentication markets as add-ons.
+Your Enterprise subscription includes everything you need to start signing from day one.
 
-**Status:** Core capabilities included. Extensions available as add-ons.
+**Signature level:** eIDAS-compliant Advanced Electronic Signatures (AES) — legally binding across the EU.
+
+**Authentication:** Finnish Trust Network (all major banks + Mobile Certificate) and Swedish BankID included.
+
+**Invitations:** Email-based signing links to each signatory.
+
+**Signing order:** Simultaneous or sequential — configurable per request.
+
+**Users:** Unlimited accounts included.
+
+**Status:** All included.
 
 ## 1.2 Portal, Access & Branding Defaults
 
-Your employees log in via corporate SSO (Azure AD / Entra ID) — no separate passwords needed. Your portal carries your organization's branding on both the sender interface and all signer-facing pages, including the signed PDF cover page. Your company name appears as the SMS sender and email domain. The organization structure (departments, roles, permissions) is mapped from your Active Directory automatically.
+Your portal is branded and connected to your organization from the start.
 
-**Status:** Included. Branding setup is a one-time configuration.
+**Login:** Corporate SSO via Azure AD / Entra ID — no separate passwords.
+
+**Branding:** Your logo, colors, and fonts on portal, signer pages, and signed PDFs.
+
+**Sender identity:** Your domain for emails, your company name for SMS.
+
+**Organization:** Department hierarchy synced from AD with role-based access.
+
+**Status:** All included. Branding is a one-time setup.
 
 ## 1.3 Workflow Feature Defaults
 
-Your tenant comes with one default signature request template, automatic reminders (2 days after dispatch + 1 day before expiry), configurable expiry deadlines (7-90 days), and signatory forwarding enabled. Advanced features — multiple templates, document upload requirements, watchers, reflection periods, bundle signing, custom metadata, and automated archiving — are available and can be enabled per template or per tenant through configuration work.
+Sensible workflow defaults active from day one. Advanced features available via configuration.
+
+**Active:** Default signing template, automatic reminders, configurable expiry (7-90 days), signatory forwarding.
+
+**Available via configuration:** Multiple templates, watchers, document upload, reflection periods, bundle signing, custom metadata, automated archiving.
 
 **Status:** Base features active. Advanced features configurable.
 
@@ -44,13 +66,27 @@ Included in your Enterprise subscription. Transaction fees apply per use — see
 
 ## 2.1 Qualified & Advanced Electronic Signatures
 
-eIDAS-compliant digital signing across the EU. Every signed document receives a qualified timestamp and integrity seal via an AATL-certified certificate, ensuring long-term legal validity and tamper-proof evidence. Your recipients see a trusted validation indicator (blue banner, green checkmark) in standard Adobe Acrobat — no plugins, no internet connection needed. Documents use PAdES-LTV format, remaining independently verifiable offline for decades.
+eIDAS-compliant digital signing across the EU — legally binding, tamper-proof, independently verifiable.
 
-**Status:** Included (per-transaction billing)
+**Standard:** eIDAS Advanced Electronic Signature (AES) — covers ~99% of Finnish business transactions.
+
+**Verification:** Recipients see a trusted validation indicator (blue banner, green checkmark) in Adobe Acrobat. No plugins needed.
+
+**Tamper protection:** Any modification after signing breaks the seal. Adobe flags it immediately.
+
+**Long-term validity:** PAdES-LTV format — independently verifiable offline for decades.
+
+**Status:** Included (per-transaction billing).
 
 ## 2.2 Authentication Methods
 
-Your signers use their own familiar bank credentials or national eID. No account creation, no software, no registration from the signer's side. You send a link — they authenticate and sign. Strong authentication (AES) via Finnish Trust Network banks (OP, Nordea, Danske, Aktia, S-Pankki, and more), Finnish Mobile Certificate, Swedish BankID, and Freja eID is included. Nordic-Baltic expansion (Norwegian BankID, Vipps, Danish MitID, Baltic Smart-ID, Mobile-ID, Estonian e-Residency) is available as an add-on.
+Your signers use their own bank credentials or national eID. No account creation, no software needed.
+
+**Finland:** All major banks via Trust Network (OP, Nordea, Danske, Aktia, S-Pankki, and more) + Mobile Certificate. Included.
+
+**Sweden:** Swedish BankID, Freja eID. Included.
+
+**Nordic-Baltic:** Norwegian BankID, Vipps, Danish MitID, Baltic Smart-ID, Mobile-ID. Available as add-on.
 
 **Status:** Finland + Sweden included. Nordic-Baltic: Add-on.
 
@@ -68,25 +104,53 @@ SMS OTP, Email OTP, and hand-drawn signature (InkSign) for lower-risk scenarios 
 
 ## 2.5 Delivery & Notifications
 
-Signing requests reach your signers via email with a secure signing link. SMS delivery is available as an alternative or combined channel. Automatic reminders chase pending signatories at configurable intervals. Upon completion, all parties receive an email with an OTP-protected download link. All notification templates are branded to your organization.
+How signing requests reach your signers and how everyone stays informed.
+
+**Invitations:** Email with secure signing link. SMS available as add-on.
+
+**Reminders:** Automatic at configurable intervals. Manual on-demand from portal.
+
+**Completion:** All parties receive email with OTP-protected download link.
+
+**Branding:** All notification templates carry your organization's branding.
 
 **Status:** Email included. SMS: Add-on (per message).
 
 ## 2.6 Audit Trail & Compliance
 
-Every signed document is self-proving. The complete evidence record — identity, authentication method, precise timestamps, IP address — is embedded inside the PDF per signatory. Documents use qualified timestamps and PAdES-LTV format for long-term verification. You are Data Controller, SK ID Solutions is Data Processor. SSN can be hashed cryptographically for GDPR compliance.
+Every signed document is self-proving — the complete evidence record is embedded inside the PDF.
+
+**Per signatory:** Identity, authentication method, precise timestamps, IP address.
+
+**Document integrity:** Qualified timestamps + PAdES-LTV format — verifiable offline for decades.
+
+**GDPR:** You are Data Controller, SK is Data Processor. SSN can be cryptographically hashed.
 
 **Status:** Included.
 
 ## 2.7 Portal Access
 
-Browser-based interface. No software installation. Your team creates, sends, tracks, and downloads signing requests from the web portal. Real-time status dashboard shows per-request and per-signatory progress with timestamped event logs. Requests can be cancelled, corrected, and copied with all settings pre-filled.
+Browser-based — no software installation needed.
+
+**Create & send:** Upload documents, add signatories, configure settings, dispatch.
+
+**Track:** Real-time status dashboard with per-signatory progress and event logs.
+
+**Manage:** Cancel, correct, resend, or copy requests with all settings pre-filled.
 
 **Status:** Included.
 
 ## 2.8 REST API Access
 
-Full REST API included in your Enterprise subscription. Multi-step flow for granular control, or OneStep endpoint for single-call dispatch. Webhooks push real-time notifications to your system when documents are signed, rejected, or expired. Embedded signing lets signers complete the process within your own application. Automated archiving retrieves signed PDFs upon completion.
+Full REST API included — embed signing directly into your business systems.
+
+**Integration:** Multi-step flow for granular control, or OneStep endpoint for single-call dispatch.
+
+**Real-time events:** Webhooks notify your system when documents are signed, rejected, or expired.
+
+**Embedded signing:** Signers complete the process within your own application.
+
+**Archiving:** Automated retrieval of signed PDFs upon completion.
 
 **Status:** Included.
 
