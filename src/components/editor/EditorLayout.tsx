@@ -8,7 +8,8 @@ import { FeatureIntroduction } from '@/components/templates/FeatureIntroduction'
 import { PricingProposal } from '@/components/templates/PricingProposal'
 import { PriceList } from '@/components/templates/PriceList'
 import type { BrandContact } from '@/lib/brand-config'
-import type { KBDocument } from '@/lib/types'
+import type { KBDocument, PrintFormat } from '@/lib/types'
+import { useEffect } from 'react'
 
 export function EditorLayout({
   overviewKB,
@@ -19,6 +20,7 @@ export function EditorLayout({
   initialCustomerName = '[Customer Name]',
   initialLang = 'en',
   sender,
+  printFormat = 'continuous',
   onBackToOnboarding,
 }: {
   overviewKB: KBDocument
@@ -29,9 +31,30 @@ export function EditorLayout({
   initialCustomerName?: string
   initialLang?: 'en' | 'fi'
   sender?: BrandContact
+  printFormat?: PrintFormat
   onBackToOnboarding?: () => void
 }) {
   const { brand, locale, lang } = useBrand()
+
+  useEffect(() => {
+    document.body.classList.remove('print-continuous', 'print-a4')
+    document.body.classList.add(printFormat === 'a4' ? 'print-a4' : 'print-continuous')
+
+    let styleEl = document.getElementById('print-format-style') as HTMLStyleElement | null
+    if (!styleEl) {
+      styleEl = document.createElement('style')
+      styleEl.id = 'print-format-style'
+      document.head.appendChild(styleEl)
+    }
+    styleEl.textContent = printFormat === 'a4'
+      ? '@media print { @page { size: A4; } }'
+      : '@media print { @page { size: auto; } }'
+
+    return () => {
+      document.body.classList.remove('print-continuous', 'print-a4')
+      styleEl?.remove()
+    }
+  }, [printFormat])
   const editor = useEditorState(createInitialState(initialTemplateType, initialLang, initialCustomerName))
 
   const kb = editor.state.depth === 'overview' ? overviewKB : detailKB
@@ -123,6 +146,8 @@ export function EditorLayout({
         onToggleTerms={editor.toggleTerms}
         onSetTemplateType={editor.setTemplateType}
         onBackToOnboarding={onBackToOnboarding}
+        onPrint={() => window.print()}
+        printFormat={printFormat}
       />
       <main style={{ flex: 1, overflow: 'auto' }}>
         {renderTemplate()}

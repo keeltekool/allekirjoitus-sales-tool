@@ -1,7 +1,7 @@
 'use client'
 
 import { useBrand } from '@/lib/brand-context'
-import type { EditorState, LayerConfig, PricingConfig, TemplateType } from '@/lib/types'
+import type { EditorState, LayerConfig, PricingConfig, TemplateType, PrintFormat } from '@/lib/types'
 
 type SidebarProps = {
   state: EditorState
@@ -12,6 +12,8 @@ type SidebarProps = {
   onToggleTerms: () => void
   onSetTemplateType: (type: TemplateType) => void
   onBackToOnboarding?: () => void
+  onPrint?: () => void
+  printFormat?: PrintFormat
 }
 
 function Toggle({ checked, onChange, label }: { checked: boolean; onChange: () => void; label: string }) {
@@ -75,7 +77,7 @@ const TEMPLATE_TYPES: TemplateType[] = [
   'price_list',
 ]
 
-export function Sidebar({ state, onToggleLayer, onSetDepth, onTogglePricing, onToggleCustomBlock, onToggleTerms, onSetTemplateType, onBackToOnboarding }: SidebarProps) {
+export function Sidebar({ state, onToggleLayer, onSetDepth, onTogglePricing, onToggleCustomBlock, onToggleTerms, onSetTemplateType, onBackToOnboarding, onPrint, printFormat }: SidebarProps) {
   const { locale } = useBrand()
   const s = locale.sidebar
   const showLayers = state.templateType !== 'price_list' && state.templateType !== 'pricing_proposal'
@@ -170,6 +172,25 @@ export function Sidebar({ state, onToggleLayer, onSetDepth, onTogglePricing, onT
           <div style={{ display: 'flex', gap: '8px' }}>
             <DepthButton active={state.depth === 'overview'} onClick={() => onSetDepth('overview')} label={s.overview} />
             <DepthButton active={state.depth === 'detail'} onClick={() => onSetDepth('detail')} label={s.detail} />
+          </div>
+        </>
+      )}
+
+      {onPrint && (
+        <>
+          <div style={{ marginTop: '24px', paddingTop: '16px', borderTop: '1px solid var(--brand-gray-border)' }}>
+            <button
+              onClick={onPrint}
+              className="sidebar-print-btn"
+            >
+              {locale.sidebar.overview === 'Yleiskatsaus' ? 'Tulosta / PDF' : 'Print / Export PDF'}
+            </button>
+            <div style={{ fontSize: '11px', color: 'var(--brand-gray-500)', marginTop: '6px', lineHeight: 1.4 }}>
+              {printFormat === 'continuous'
+                ? (locale.sidebar.overview === 'Yleiskatsaus' ? 'Jatkuva sivu' : 'Continuous page')
+                : 'A4'
+              }
+            </div>
           </div>
         </>
       )}

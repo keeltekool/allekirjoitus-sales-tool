@@ -346,6 +346,24 @@ body {
   background: rgba(239, 66, 36, 0.04);
 }
 
+.sidebar-print-btn {
+  display: block;
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: var(--font-body), 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: #ffffff;
+  background: var(--brand-primary);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.sidebar-print-btn:hover {
+  background: var(--brand-primary-hover);
+}
+
 /* ============================================================
    ONBOARDING — uses same design tokens as templates
    ============================================================ */
@@ -585,7 +603,8 @@ body.editing .cta-band [contenteditable='true'] {
   .sidebar {
     display: none !important;
   }
-  .sidebar-back-btn {
+  .sidebar-back-btn,
+  .sidebar-print-btn {
     display: none !important;
   }
   .onboarding-lang-btn,
@@ -602,7 +621,12 @@ body.editing .cta-band [contenteditable='true'] {
 
   @page {
     margin: 16mm 18mm;
-    size: A4;
+  }
+  body.print-a4 {
+    /* A4 paginated mode */
+  }
+  body.print-continuous {
+    /* Continuous mode — no fixed page size */
   }
 
   html,

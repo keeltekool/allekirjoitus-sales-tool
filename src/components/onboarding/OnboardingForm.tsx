@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useBrand } from '@/lib/brand-context'
 import { AllekirjoitusLogo } from '@/components/shared/AllekirjoitusLogo'
 import type { BrandContact } from '@/lib/brand-config'
-import type { TemplateType } from '@/lib/types'
+import type { TemplateType, PrintFormat } from '@/lib/types'
 
 const TEMPLATE_CARDS: { type: TemplateType; descEn: string; descFi: string }[] = [
   {
@@ -32,13 +32,14 @@ const TEMPLATE_CARDS: { type: TemplateType; descEn: string; descFi: string }[] =
 export function OnboardingForm({
   onStart,
 }: {
-  onStart: (lang: 'en' | 'fi', customerName: string, templateType: TemplateType, sender: BrandContact) => void
+  onStart: (lang: 'en' | 'fi', customerName: string, templateType: TemplateType, sender: BrandContact, printFormat: PrintFormat) => void
 }) {
   const { brand } = useBrand()
   const [lang, setLang] = useState<'en' | 'fi'>(brand.defaultLanguage as 'en' | 'fi')
   const [customerName, setCustomerName] = useState('')
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateType>('enterprise_offer')
   const [sender, setSender] = useState<BrandContact>({ ...brand.contact })
+  const [printFormat, setPrintFormat] = useState<PrintFormat>('continuous')
 
   const localeStrings = brand.locale[lang]
 
@@ -182,11 +183,56 @@ export function OnboardingForm({
         </div>
       </div>
 
+      {/* Print format */}
+      <div className="section" style={{ marginBottom: '32px' }}>
+        <h2 className="section__heading" style={{ fontSize: '24px' }}>
+          {lang === 'fi' ? 'PDF-muoto' : 'PDF Format'}
+        </h2>
+        <div style={{ display: 'flex', gap: '12px' }}>
+          <button
+            onClick={() => setPrintFormat('continuous')}
+            className={printFormat === 'continuous' ? 'onboarding-template-card--active' : 'onboarding-template-card'}
+            style={{ flex: 1 }}
+          >
+            <div style={{
+              fontFamily: 'var(--font-heading), Helvetica, Arial, sans-serif',
+              fontWeight: 600,
+              fontSize: '16px',
+              color: printFormat === 'continuous' ? 'var(--brand-primary)' : 'var(--brand-text-black-pure)',
+              marginBottom: '4px',
+            }}>
+              {lang === 'fi' ? 'Jatkuva' : 'Continuous'}
+            </div>
+            <div style={{ fontSize: '13px', color: 'var(--brand-gray-500)', lineHeight: 1.4 }}>
+              {lang === 'fi' ? 'Yksi pitkä sivu — paras PDF-jakoon' : 'One long page — best for PDF sharing'}
+            </div>
+          </button>
+          <button
+            onClick={() => setPrintFormat('a4')}
+            className={printFormat === 'a4' ? 'onboarding-template-card--active' : 'onboarding-template-card'}
+            style={{ flex: 1 }}
+          >
+            <div style={{
+              fontFamily: 'var(--font-heading), Helvetica, Arial, sans-serif',
+              fontWeight: 600,
+              fontSize: '16px',
+              color: printFormat === 'a4' ? 'var(--brand-primary)' : 'var(--brand-text-black-pure)',
+              marginBottom: '4px',
+            }}>
+              A4
+            </div>
+            <div style={{ fontSize: '13px', color: 'var(--brand-gray-500)', lineHeight: 1.4 }}>
+              {lang === 'fi' ? 'Sivutettu A4 — tulostukseen' : 'Paginated A4 — for printing'}
+            </div>
+          </button>
+        </div>
+      </div>
+
       {/* CTA */}
       <div
         className="cta-band"
         style={{ cursor: 'pointer' }}
-        onClick={() => onStart(lang, customerName || '[Customer Name]', selectedTemplate, sender)}
+        onClick={() => onStart(lang, customerName || '[Customer Name]', selectedTemplate, sender, printFormat)}
       >
         <div className="cta-band__text">
           <h2 className="cta-band__heading" style={{ fontSize: '28px' }}>

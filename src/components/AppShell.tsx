@@ -5,7 +5,7 @@ import { BrandProvider } from '@/lib/brand-context'
 import { OnboardingForm } from '@/components/onboarding/OnboardingForm'
 import { EditorLayout } from '@/components/editor/EditorLayout'
 import type { BrandConfig, BrandContact } from '@/lib/brand-config'
-import type { KBDocument, TemplateType } from '@/lib/types'
+import type { KBDocument, TemplateType, PrintFormat } from '@/lib/types'
 
 type KBSet = {
   overviewEN: KBDocument
@@ -23,6 +23,7 @@ type OnboardingResult = {
   customerName: string
   templateType: TemplateType
   sender: BrandContact
+  printFormat: PrintFormat
 }
 
 export function AppShell({
@@ -38,8 +39,8 @@ export function AppShell({
     return (
       <BrandProvider brand={brand} lang={brand.defaultLanguage}>
         <OnboardingForm
-          onStart={(lang, customerName, templateType, sender) =>
-            setSession({ lang, customerName, templateType, sender })
+          onStart={(lang, customerName, templateType, sender, printFormat) =>
+            setSession({ lang, customerName, templateType, sender, printFormat })
           }
         />
       </BrandProvider>
@@ -62,6 +63,7 @@ export function AppShell({
         initialCustomerName={session.customerName}
         initialLang={session.lang}
         sender={session.sender}
+        printFormat={session.printFormat}
         onBackToOnboarding={() => setSession(null)}
       />
     </BrandProvider>

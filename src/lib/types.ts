@@ -37,6 +37,8 @@ export type KBDocument = {
 
 export type TemplateType = 'enterprise_offer' | 'feature_introduction' | 'pricing_proposal' | 'price_list'
 
+export type PrintFormat = 'continuous' | 'a4'
+
 export type LayerConfig = {
   defaults: boolean
   core: boolean

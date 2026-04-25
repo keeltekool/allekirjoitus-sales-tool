@@ -33,11 +33,13 @@ Multi-brand sales enablement tool for SK ID Solutions KA managers. Generates bra
 - CTA band with Terhi Roll contact from brand config
 
 ### What's NOT built yet:
-- Neon DB integration — brand config is static TypeScript, not DB
-- Presets (save/load from Neon)
-- Password auth
+- Neon DB integration — brand config migration from static TypeScript to DB (NEXT)
 - Finnish render-optimized terms files (EN used for both languages currently)
-- Print optimization verification
+
+### FROZEN (documented, not building now):
+- **Password auth** — Task 26 from plan. Simple middleware: check cookie → redirect to `/login`. `SITE_PASSWORD` env var. Global protection. Ready to implement when needed.
+- **Presets save/load** — Tasks 22(partial)+25 from plan. Drizzle `presets` table (id, brand_id, name, template_type, layer_config JSONB, depth, pricing_config JSONB, is_builtin). Sidebar dropdown "Load preset..." + "Save as preset..." scoped per brand. Built-in presets from PRD Section 11. Requires Neon DB connection first.
+- **Finnish render-optimized terms** — TERMS_OVERVIEW_FI.md + TERMS_DETAIL_FI.md. Translate from EN versions. Currently EN files used for both languages.
 
 ### KB files (render-optimized):
 - `MASTER_KB_OVERVIEW_EN.md` — Overview depth, structured key points (ALL parts rewritten)
