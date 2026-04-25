@@ -3,15 +3,13 @@
 import { Header } from '@/components/shared/Header'
 import { TitleBlock } from '@/components/shared/TitleBlock'
 import { Section } from '@/components/shared/Section'
-import { IncludedList } from '@/components/shared/IncludedList'
 import { CTABand } from '@/components/shared/CTABand'
 import { Footer } from '@/components/shared/Footer'
 import { EditToggle } from '@/components/shared/EditToggle'
 import { PricingBlock } from '@/components/pricing/PricingBlock'
 import { TermsBlock } from '@/components/content/TermsBlock'
 import { Deletable } from '@/components/shared/Deletable'
-import type { KBDocument, LayerConfig, PricingConfig } from '@/lib/types'
-import { PART_TO_LAYER } from '@/lib/types'
+import type { KBDocument, PricingConfig } from '@/lib/types'
 
 const INTRO = {
   en: 'Based on your organization\'s signing requirements, we propose transitioning to Allekirjoitus.fi Enterprise — a flexible, usage-based electronic signing platform that scales with your business. This proposal outlines the recommended configuration and transparent pricing for your evaluation.',
@@ -46,45 +44,26 @@ const VALUE_NOTE = {
   fi: 'Tämä tapahtumapohjainen malli korvaa kiinteät pakettihinnat. Maksat vain käytöstä — ei volyymikattoja, ei yllätyksiä ylitysmaksuista. Allekirjoitusvolyymien kasvaessa tapahtumahinta pysyy samana, mikä takaa ennakoitavat ja läpinäkyvät kustannukset.',
 }
 
-function getIncludedItems(kb: KBDocument, layers: LayerConfig): string[] {
-  const items: string[] = []
-  for (const part of kb.parts) {
-    const layerKey = PART_TO_LAYER[part.number]
-    if (!layerKey || !layers[layerKey]) continue
-    for (const section of part.sections) {
-      items.push(section.title)
-    }
-  }
-  return items
-}
-
 export function PricingProposal({
-  kb,
   customerName,
   date,
   eyebrow,
   heading,
-  layers,
   pricing,
   showCustomerContext = false,
-  showWhatsIncluded = true,
   termsKB,
   lang = 'en',
 }: {
-  kb: KBDocument
   customerName: string
   date: string
   eyebrow: string
   heading: string
-  layers: LayerConfig
   pricing: PricingConfig
   showCustomerContext?: boolean
-  showWhatsIncluded?: boolean
   termsKB?: KBDocument
   lang?: string
 }) {
   const l = lang as 'en' | 'fi'
-  const includedItems = getIncludedItems(kb, layers)
   const solutionHeading = l === 'fi' ? 'Enterprise-ratkaisunne' : 'Your Enterprise Solution'
   const valueHeading = l === 'fi' ? 'Miksi tämä malli toimii' : 'Why This Model Works'
 
@@ -148,13 +127,6 @@ export function PricingProposal({
             <strong>{valueHeading}:</strong> {VALUE_NOTE[l]}
           </div>
         </Deletable>
-
-        {/* What's Included — from toggled layers */}
-        {showWhatsIncluded && includedItems.length > 0 && (
-          <Section heading={l === 'fi' ? 'Palveluun sisältyy' : "What's Included"}>
-            <IncludedList items={includedItems} />
-          </Section>
-        )}
 
         {/* Service Terms */}
         {termsKB && <TermsBlock terms={termsKB} lang={lang} />}

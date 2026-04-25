@@ -77,7 +77,7 @@ const TEMPLATE_TYPES: TemplateType[] = [
 export function Sidebar({ state, onToggleLayer, onSetDepth, onTogglePricing, onToggleCustomBlock, onToggleTerms, onSetTemplateType }: SidebarProps) {
   const { locale } = useBrand()
   const s = locale.sidebar
-  const showLayers = state.templateType !== 'price_list'
+  const showLayers = state.templateType !== 'price_list' && state.templateType !== 'pricing_proposal'
   const showCustomBlocks = state.templateType === 'enterprise_offer' || state.templateType === 'pricing_proposal'
   const showDepth = state.templateType !== 'price_list' && state.templateType !== 'pricing_proposal'
 
@@ -136,7 +136,9 @@ export function Sidebar({ state, onToggleLayer, onSetDepth, onTogglePricing, onT
         <>
           <SectionLabel label={s.customBlocks} />
           <Toggle checked={state.customBlocks.customerContext} onChange={() => onToggleCustomBlock('customerContext')} label={s.customerContext} />
-          <Toggle checked={state.customBlocks.whatsIncluded} onChange={() => onToggleCustomBlock('whatsIncluded')} label={s.whatsIncluded} />
+          {state.templateType !== 'pricing_proposal' && (
+            <Toggle checked={state.customBlocks.whatsIncluded} onChange={() => onToggleCustomBlock('whatsIncluded')} label={s.whatsIncluded} />
+          )}
         </>
       )}
 

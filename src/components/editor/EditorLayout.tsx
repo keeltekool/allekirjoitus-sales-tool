@@ -80,15 +80,12 @@ export function EditorLayout({
       case 'pricing_proposal':
         return (
           <PricingProposal
-            kb={kb}
             customerName={editor.state.customerName}
             date={date}
             eyebrow={eyebrow}
             heading={lang === 'fi' ? 'Räätälöity tapahtumahinnoittelu' : 'Tailored Transaction Pricing'}
-            layers={editor.state.layers}
             pricing={editor.state.pricing}
             showCustomerContext={editor.state.customBlocks.customerContext}
-            showWhatsIncluded={editor.state.customBlocks.whatsIncluded}
             termsKB={showTerms ? termsKB : undefined}
             lang={lang}
           />
