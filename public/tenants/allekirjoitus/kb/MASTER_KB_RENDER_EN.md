@@ -19,85 +19,80 @@ What you get on day one as an Enterprise customer. Your dedicated tenant is conf
 
 ## 1.1 Signing & Authentication Defaults
 
-Your Enterprise subscription comes ready with eIDAS-compliant Advanced Electronic Signatures (AES) and strong authentication across Finland and Sweden — no additional setup needed.
+Your Enterprise subscription includes eIDAS-compliant signing and strong authentication across Finland and Sweden from day one. These are your defaults — no additional setup, no extra cost.
 
-**Signature level:** Advanced Electronic Signature (AES) — eIDAS-compliant, legally binding across the EU. Covers ~99% of Finnish business transactions. Can be extended to Qualified Electronic Signatures (QES) via national ID cards, or Light Signing (SES) via SMS OTP, Email OTP, and drawn signature as an add-on.
+**Signature level:** Advanced Electronic Signature (AES) — eIDAS-compliant, legally binding across the entire EU. Covers ~99% of Finnish business transactions.
 
-**Authentication — Finland:** All Finnish banks via Trust Network — OP, Nordea, Danske, Aktia, S-Pankki, Säästöpankki, POP, Ålandsbanken, OmaSP — plus Finnish Mobile Certificate. Included.
+**Authentication — Finland:** All major Finnish banks via Trust Network (OP, Nordea, Danske, Aktia, S-Pankki, Säästöpankki, POP, Ålandsbanken, OmaSP) and Finnish Mobile Certificate.
 
-**Authentication — Sweden:** Swedish BankID and Freja eID. Included.
+**Authentication — Sweden:** Swedish BankID and Freja eID.
 
-**Authentication — Nordic-Baltic:** Not active by default. Can be extended to Norwegian BankID, Vipps, Danish MitID, Smart-ID and Mobile-ID (Estonia, Latvia, Lithuania), and Estonian e-Residency. Add-on.
+**Signing invitations:** Email-based signing links sent to each signatory.
 
-**Invitation delivery:** Email by default. Can be extended to SMS delivery or combined Email + SMS. SMS is an add-on per message.
+**Document retrieval:** OTP-protected download link via SMS after signing is complete.
 
-**Document retrieval:** OTP-protected download link via SMS. Can be extended to automated retrieval and archiving via API/webhooks. API access included; custom archive connectors require configuration work.
+**Signing order:** Configurable per request — simultaneous (all at once) or sequential (one after another).
 
-**Signing order:** Configurable per request — simultaneous or sequential. Can be extended to multi-level signatory groups, hybrid modes, and approval hierarchies. Included.
+**Document format:** PDF/A (max 100 MB).
 
-**Document format:** PDF/A required (max 100 MB). Office files and images accepted with auto-conversion as an add-on.
+**Users:** Unlimited user accounts.
 
-**Users:** Unlimited. Included.
-
-**Status:** Core capabilities included. Extensions available as add-ons or configuration work.
+**Status:** All included in your Enterprise subscription.
 
 ## 1.2 Portal, Access & Branding Defaults
 
-Your employees access the platform through corporate SSO. Your portal and all signer-facing pages carry your organization's branding from day one.
+Your employees log in with corporate credentials. Your portal carries your brand. Everything is configured during onboarding.
 
-**Login:** SSO via Azure AD / Entra ID — employees log in with corporate credentials. No separate passwords needed. Username + password also available as fallback. SSO setup included as part of onboarding.
+**Login:** SSO via Azure AD / Entra ID — employees use corporate credentials. No separate accounts or passwords.
 
-**Portal branding:** Your organization's logo, colors, fonts, and background on both the sender portal and signer-facing pages. Per-department branding variations available. One-time setup.
+**Portal branding:** Your logo, colors, fonts, and background on both the sender portal and all signer-facing pages. Branded PAdES cover page on every signed document.
 
-**Signed PDF cover page:** Your company logo with signatory metadata columns (name, authentication method, timestamp). Customizable — add SSN or IP address columns, create per-department variations. Included in branding setup.
+**Portal URL:** companyname.allekirjoitus.fi — your company name in the signing URL.
 
-**Portal URL:** companyname.allekirjoitus.fi by default. Can be upgraded to a fully custom domain (e.g., signing.yourcompany.fi) with dedicated SSL. Custom domain requires configuration work.
+**Email sender:** Notifications come from your corporate domain.
 
-**Email & SMS sender:** Notifications come from your own domain. SMS sender shows your company name (max 11 characters). Included in branding setup.
+**SMS sender:** Your company name (max 11 characters) displayed on signers' phones.
 
-**Message templates:** Fully customized to your brand — email content, HTML layout, footer, legal disclaimers. Additional templates per business process and notification suppression for API flows available via configuration work. Included in branding setup.
+**Message templates:** Email content, HTML layout, footer, and legal disclaimers customized to your brand.
 
-**Organization structure:** Your dedicated tenant with department hierarchy mapped from Active Directory. Multi-department structure with scoped visibility. Included.
+**Organization structure:** Dedicated tenant with department hierarchy synced from Active Directory. Three roles — Organization Admin, Department Admin, Department User.
 
-**User roles:** Organization Admin (full visibility and management), Department Admin (department scope), Department User (own requests only). Included.
+**Language:** Finnish, Swedish, and English — selectable per request.
 
-**Language:** Finnish, Swedish, and English — selectable per request. Included.
-
-**Status:** Included. Branding is a one-time setup.
+**Status:** All included. Branding configured as a one-time setup during onboarding.
 
 ## 1.3 Workflow Feature Defaults
 
-Your tenant ships with sensible defaults for common signing workflows. Advanced orchestration features can be activated per template or per tenant.
+Your tenant ships with sensible workflow defaults. Advanced features can be activated per template or per tenant when needed.
 
-**Signature request templates:** One generic default template. Can be expanded to multiple templates per business process, each with locked rules for authentication, signing order, reminders, and compliance. Configuration work.
+### Active by default
 
-**Automatic reminders:** Active — 2 days after dispatch + 1 day before expiry. Customizable to specific intervals and SMS reminders. Configuration work.
+**Signature request template:** One generic template ready for immediate use.
 
-**Manual reminders:** Active — trigger on-demand from the portal to individual signers. Included.
+**Automatic reminders:** 2 days after dispatch + 1 day before expiry.
 
-**Request expiry:** Sender selects per request: 7, 14, 30, or 90 days. Custom maximum configurable per tenant. Configuration work.
+**Manual reminders:** On-demand from the portal to individual signers.
 
-**Document retention:** 90 days default. Extendable up to 365 days. Configuration work.
+**Request expiry:** Sender selects per request — 7, 14, 30, or 90 days.
 
-**Signatory forwarding:** Active — signers can delegate to authorized colleagues. Can be disabled per template. Included.
+**Document retention:** 90 days from completion.
 
-**Signatory document upload:** Disabled by default. Can be enabled per template — signers must upload ID, diplomas, or certificates before signing. Configuration work.
+**Signatory forwarding:** Signers can delegate to authorized colleagues when they lack signing authority.
 
-**Watchers/observers:** Disabled by default. Non-signing stakeholders who receive progress notifications. Enabled per template. Configuration work.
+### Available via configuration
 
-**Signatory status view:** Disabled by default. When enabled, signers can see the identity and signing status of other participants. Configuration work.
+The following advanced capabilities are disabled by default but can be activated per template or per tenant through configuration work:
 
-**Review/reflection period:** Disabled by default. Mandatory waiting period before signing — overnight, 7 days, or 14 days. Required by Finnish consumer protection law for loans and mortgages. Configuration work.
+- Multiple signature request templates with locked compliance rules
+- Watchers/observers for compliance oversight
+- Signer document upload requirements (ID, diplomas)
+- Review/reflection periods for regulatory compliance (banking)
+- Bundle signing — authenticate once, sign up to 50 documents
+- Custom metadata for CRM/archive routing
+- Automatic archiving to external systems (Zefort, Arkinet)
+- Cryptographic SSN hashing for GDPR compliance
 
-**Bundle signing:** Disabled by default. Authenticate once, sign up to 50 documents in one session. Enabled per tenant. Configuration work.
-
-**SSN/identity code handling:** Stored in XAdES XML metadata (plain text) by default. Can be cryptographically hashed for GDPR data minimization. Can be locked at template level. Included (toggle) / Configuration work (to enforce).
-
-**Archiving:** Manual download from portal by default. Can be configured for automatic push to external archive (Zefort, Arkinet, or custom) via API/webhooks. Configuration work.
-
-**Custom metadata:** Disabled by default. Key-value fields per request for downstream routing to CRM/archive systems. Configuration work.
-
-**Status:** Base features active. Advanced features available via configuration work.
+**Status:** Base features active. Advanced features configurable.
 
 ---
 
