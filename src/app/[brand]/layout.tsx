@@ -1,6 +1,5 @@
 import { notFound } from 'next/navigation'
 import { getBrandConfig } from '@/lib/brand-config'
-import { BrandProvider } from '@/lib/brand-context'
 
 export default async function BrandLayout({
   children,
@@ -32,9 +31,7 @@ export default async function BrandLayout({
 
   return (
     <div style={cssVars}>
-      <BrandProvider brand={brand} lang="en">
-        {children}
-      </BrandProvider>
+      {children}
     </div>
   )
 }

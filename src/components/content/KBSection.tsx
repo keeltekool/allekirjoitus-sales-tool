@@ -2,6 +2,7 @@
 
 import type { KBSection as KBSectionType } from '@/lib/types'
 import { StatusBadge } from './StatusBadge'
+import { Deletable } from '@/components/shared/Deletable'
 
 function isLabeledItem(text: string): boolean {
   return /^\*\*[^*]+:\*\*/.test(text)
@@ -34,7 +35,7 @@ export function KBSection({ section }: { section: KBSectionType }) {
     : []
 
   return (
-    <div
+    <Deletable
       style={{
         background: '#ffffff',
         border: '1.6px solid var(--brand-gray)',
@@ -183,6 +184,6 @@ export function KBSection({ section }: { section: KBSectionType }) {
               return null
           }
         })}
-    </div>
+    </Deletable>
   )
 }

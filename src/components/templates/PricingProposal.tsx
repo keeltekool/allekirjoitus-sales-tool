@@ -3,90 +3,161 @@
 import { Header } from '@/components/shared/Header'
 import { TitleBlock } from '@/components/shared/TitleBlock'
 import { Section } from '@/components/shared/Section'
-import { PricingCard } from '@/components/shared/PricingCard'
 import { IncludedList } from '@/components/shared/IncludedList'
-import { TermsList } from '@/components/shared/TermsList'
 import { CTABand } from '@/components/shared/CTABand'
 import { Footer } from '@/components/shared/Footer'
 import { EditToggle } from '@/components/shared/EditToggle'
+import { PricingBlock } from '@/components/pricing/PricingBlock'
+import { TermsBlock } from '@/components/content/TermsBlock'
+import { Deletable } from '@/components/shared/Deletable'
+import type { KBDocument, LayerConfig, PricingConfig } from '@/lib/types'
+import { PART_TO_LAYER } from '@/lib/types'
 
-export function PricingProposal() {
+const INTRO = {
+  en: 'Based on your organization\'s signing requirements, we propose transitioning to Allekirjoitus.fi Enterprise — a flexible, usage-based electronic signing platform that scales with your business. This proposal outlines the recommended configuration and transparent pricing for your evaluation.',
+  fi: 'Organisaationne allekirjoitustarpeiden perusteella ehdotamme siirtymistä Allekirjoitus.fi Enterprise -palveluun — joustavaan, käyttöpohjaiseen sähköiseen allekirjoitusalustaan, joka skaalautuu liiketoimintanne mukana. Tämä tarjous sisältää suositellun konfiguraation ja läpinäkyvän hinnoittelun arviointianne varten.',
+}
+
+const SOLUTION_ITEMS = {
+  en: [
+    'Unlimited user accounts with Single Sign-On via Azure AD',
+    'Advanced Electronic Signatures (AES) — eIDAS-compliant, legally binding across the EU',
+    'Full REST API and Webhook integration for system automation',
+    'Custom company branding across all signer-facing touchpoints',
+    'Configurable signing workflows and multi-template setup',
+    'Strong authentication via Finnish Trust Network + Swedish BankID',
+    'PAdES signed documents with qualified timestamps — independently verifiable in Adobe Reader',
+    'Dedicated onboarding and Mon–Fri technical support (09:00–17:00 EET)',
+  ],
+  fi: [
+    'Rajaton määrä käyttäjätilejä SSO-kirjautumisella Azure AD:n kautta',
+    'Kehittyneet sähköiset allekirjoitukset (AES) — eIDAS-yhteensopivat, oikeudellisesti sitovat EU:ssa',
+    'Täysi REST API- ja Webhook-integraatiotuki järjestelmäautomaatioon',
+    'Yrityksen oma brändäys kaikissa allekirjoittajan näkymissä',
+    'Mukautettavat allekirjoitustyönkulut ja monimallinen konfiguraatio',
+    'Vahva tunnistautuminen Suomen luottamusverkoston ja Ruotsin BankID:n kautta',
+    'PAdES-allekirjoitetut asiakirjat kvalifioiduilla aikaleimoilla — todennettavissa Adobe Readerilla',
+    'Oma käyttöönottoprojekti ja ma–pe tekninen tuki (09:00–17:00 EET)',
+  ],
+}
+
+const VALUE_NOTE = {
+  en: 'This transaction-based model replaces fixed package billing. You pay only for what you use — no volume caps, no overage surprises. As your signing volumes grow, the per-transaction rate remains the same, giving you predictable and transparent costs.',
+  fi: 'Tämä tapahtumapohjainen malli korvaa kiinteät pakettihinnat. Maksat vain käytöstä — ei volyymikattoja, ei yllätyksiä ylitysmaksuista. Allekirjoitusvolyymien kasvaessa tapahtumahinta pysyy samana, mikä takaa ennakoitavat ja läpinäkyvät kustannukset.',
+}
+
+function getIncludedItems(kb: KBDocument, layers: LayerConfig): string[] {
+  const items: string[] = []
+  for (const part of kb.parts) {
+    const layerKey = PART_TO_LAYER[part.number]
+    if (!layerKey || !layers[layerKey]) continue
+    for (const section of part.sections) {
+      items.push(section.title)
+    }
+  }
+  return items
+}
+
+export function PricingProposal({
+  kb,
+  customerName,
+  date,
+  eyebrow,
+  heading,
+  layers,
+  pricing,
+  showCustomerContext = false,
+  showWhatsIncluded = true,
+  termsKB,
+  lang = 'en',
+}: {
+  kb: KBDocument
+  customerName: string
+  date: string
+  eyebrow: string
+  heading: string
+  layers: LayerConfig
+  pricing: PricingConfig
+  showCustomerContext?: boolean
+  showWhatsIncluded?: boolean
+  termsKB?: KBDocument
+  lang?: string
+}) {
+  const l = lang as 'en' | 'fi'
+  const includedItems = getIncludedItems(kb, layers)
+  const solutionHeading = l === 'fi' ? 'Enterprise-ratkaisunne' : 'Your Enterprise Solution'
+  const valueHeading = l === 'fi' ? 'Miksi tämä malli toimii' : 'Why This Model Works'
+
   return (
     <>
       <EditToggle />
       <div className="page">
-        <Header date="22 April 2026" />
+        <Header date={date} />
+        <TitleBlock eyebrow={eyebrow} heading={heading} customer={customerName} />
 
-        <TitleBlock
-          eyebrow="Pricing Proposal"
-          heading="Tailored Transaction Pricing"
-          customer="Varsinais-Suomen Auto-Center Oy"
-        />
-
-        <Section heading="Current Situation">
-          <p contentEditable suppressContentEditableWarning>
-            Your organization has been a valued Allekirjoitus.fi customer, using our Portal signing solution for your document workflows. Over recent months, your signing volumes have grown significantly beyond your current package allocation, resulting in escalating overage costs.
-          </p>
-          <p contentEditable suppressContentEditableWarning>
-            To better align pricing with your actual usage, we propose transitioning to a transparent, per-transaction billing model with no fixed monthly fee.
-          </p>
-        </Section>
-
-        <PricingCard
-          title="Proposed Pricing"
-          subtitle="Transaction-based billing. Pay only for what you use."
-          items={[
-            {
-              name: 'Monthly platform fee',
-              description: 'Access to Allekirjoitus.fi signing portal',
-              price: '0',
-              unit: 'EUR',
-              highlight: true,
-            },
-            {
-              name: 'Signature Request - Strong Authentication (AES)',
-              description: 'Per signatory. Includes strong identification and document sealing with qualified timestamp.',
-              price: '0.80',
-              unit: 'EUR',
-            },
-            {
-              name: 'SMS Message',
-              description: 'Per message. Document retrieval notifications.',
-              price: '0.10',
-              unit: 'EUR',
-            },
-          ]}
-        />
-
-        <div className="comparison-note" contentEditable suppressContentEditableWarning>
-          This transaction-based model replaces the fixed package structure. At your current monthly volumes, the per-transaction rate of 0.90 EUR (signature + SMS) represents a lower effective cost per signing compared to package overage billing, and scales predictably as your usage grows.
+        {/* Intro paragraph */}
+        <div className="section">
+          <div className="section__body" contentEditable suppressContentEditableWarning>
+            <p>{INTRO[l]}</p>
+          </div>
         </div>
 
-        <Section heading="What's Included">
-          <IncludedList
-            items={[
-              'Full Allekirjoitus.fi Portal access',
-              'Unlimited user accounts',
-              'Strong Authentication via Finnish Trust Network',
-              'Swedish BankID support',
-              'eIDAS-compliant document sealing',
-              'Qualified timestamps on all signatures',
-              'Email-based signing invitations',
-              'Seamless transition from current setup',
-            ]}
-          />
+        {/* Customer Situation */}
+        {showCustomerContext && (
+          <div className="section">
+            <h2 className="section__heading" style={{ fontSize: '24px' }}>
+              {l === 'fi' ? 'Nykytilanne' : 'Current Situation'}
+            </h2>
+            <div
+              className="section__body"
+              contentEditable
+              suppressContentEditableWarning
+              style={{
+                minHeight: '80px',
+                padding: '16px',
+                background: 'var(--brand-gray-light)',
+                borderRadius: '8px',
+                color: 'var(--brand-gray-500)',
+              }}
+            >
+              <p>{l === 'fi'
+                ? 'Kuvaa asiakkaan nykytilanne tähän — nykyinen allekirjoitusratkaisu, volyymit, haasteet...'
+                : 'Describe the customer\'s current situation — existing signing solution, volumes, pain points...'
+              }</p>
+            </div>
+          </div>
+        )}
+
+        {/* Your Enterprise Solution — curated value props */}
+        <Section heading={solutionHeading}>
+          <ul className="included-list" style={{ gridTemplateColumns: '1fr' }}>
+            {SOLUTION_ITEMS[l].map((item, i) => (
+              <Deletable key={i} as="li">
+                <span contentEditable suppressContentEditableWarning>{item}</span>
+              </Deletable>
+            ))}
+          </ul>
         </Section>
 
-        <Section heading="General Terms">
-          <TermsList
-            items={[
-              'All transaction prices are per the current Allekirjoitus.fi official price list (VAT 0%).',
-              'Billing is monthly, based on actual usage during the calendar month.',
-              'A signature request is charged per signatory when a document is dispatched for signing.',
-              'Enterprise-tier features (API access, SSO, custom branding, multi-tenant) are available upon request at standard pricing.',
-            ]}
-          />
-        </Section>
+        {/* Pricing — hero */}
+        <PricingBlock config={pricing} />
+
+        {/* Value note */}
+        <Deletable>
+          <div className="comparison-note" contentEditable suppressContentEditableWarning>
+            <strong>{valueHeading}:</strong> {VALUE_NOTE[l]}
+          </div>
+        </Deletable>
+
+        {/* What's Included — from toggled layers */}
+        {showWhatsIncluded && includedItems.length > 0 && (
+          <Section heading={l === 'fi' ? 'Palveluun sisältyy' : "What's Included"}>
+            <IncludedList items={includedItems} />
+          </Section>
+        )}
+
+        {/* Service Terms */}
+        {termsKB && <TermsBlock terms={termsKB} lang={lang} />}
 
         <CTABand />
         <Footer />

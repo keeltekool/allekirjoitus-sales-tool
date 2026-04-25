@@ -1,5 +1,7 @@
 'use client'
 
+import { DeletableRow } from './Deletable'
+
 export type PricingItem = {
   name: string
   description: string
@@ -32,7 +34,7 @@ export function PricingCard({
         </thead>
         <tbody>
           {items.map((item, i) => (
-            <tr key={i}>
+            <DeletableRow key={i}>
               <td>
                 <div className="component-name" contentEditable suppressContentEditableWarning>
                   {item.name}
@@ -45,7 +47,7 @@ export function PricingCard({
                 {item.price}
                 <span className="price-unit"> {item.unit}</span>
               </td>
-            </tr>
+            </DeletableRow>
           ))}
         </tbody>
       </table>

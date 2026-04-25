@@ -100,6 +100,10 @@ export type BrandConfig = {
     overview: { en: string; fi: string }
     detail: { en: string; fi: string }
   }
+  terms: {
+    overview: { en: string; fi: string }
+    detail: { en: string; fi: string }
+  }
   languages: string[]
   defaultLanguage: string
   locale: {

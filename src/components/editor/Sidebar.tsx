@@ -1,7 +1,7 @@
 'use client'
 
 import { useBrand } from '@/lib/brand-context'
-import type { EditorState, LayerConfig, PricingConfig } from '@/lib/types'
+import type { EditorState, LayerConfig, PricingConfig, TemplateType } from '@/lib/types'
 
 type SidebarProps = {
   state: EditorState
@@ -10,6 +10,7 @@ type SidebarProps = {
   onTogglePricing: (key: keyof PricingConfig) => void
   onToggleCustomBlock: (block: 'customerContext' | 'whatsIncluded') => void
   onToggleTerms: () => void
+  onSetTemplateType: (type: TemplateType) => void
 }
 
 function Toggle({ checked, onChange, label }: { checked: boolean; onChange: () => void; label: string }) {
@@ -66,10 +67,19 @@ function SectionLabel({ label }: { label: string }) {
   )
 }
 
-export function Sidebar({ state, onToggleLayer, onSetDepth, onTogglePricing, onToggleCustomBlock, onToggleTerms }: SidebarProps) {
+const TEMPLATE_TYPES: TemplateType[] = [
+  'enterprise_offer',
+  'feature_introduction',
+  'pricing_proposal',
+  'price_list',
+]
+
+export function Sidebar({ state, onToggleLayer, onSetDepth, onTogglePricing, onToggleCustomBlock, onToggleTerms, onSetTemplateType }: SidebarProps) {
   const { locale } = useBrand()
   const s = locale.sidebar
+  const showLayers = state.templateType !== 'price_list'
   const showCustomBlocks = state.templateType === 'enterprise_offer' || state.templateType === 'pricing_proposal'
+  const showDepth = state.templateType !== 'price_list' && state.templateType !== 'pricing_proposal'
 
   return (
     <aside
@@ -87,13 +97,40 @@ export function Sidebar({ state, onToggleLayer, onSetDepth, onTogglePricing, onT
         fontSize: '14px',
       }}
     >
-      <SectionLabel label={s.contentLayers} />
-      <Toggle checked={state.layers.defaults} onChange={() => onToggleLayer('defaults')} label={s.layers.defaults} />
-      <Toggle checked={state.layers.core} onChange={() => onToggleLayer('core')} label={s.layers.core} />
-      <Toggle checked={state.layers.workflows} onChange={() => onToggleLayer('workflows')} label={s.layers.workflows} />
-      <Toggle checked={state.layers.config} onChange={() => onToggleLayer('config')} label={s.layers.config} />
-      <Toggle checked={state.layers.addons} onChange={() => onToggleLayer('addons')} label={s.layers.addons} />
-      <Toggle checked={state.layers.patterns} onChange={() => onToggleLayer('patterns')} label={s.layers.patterns} />
+      <SectionLabel label="Template" />
+      <select
+        value={state.templateType}
+        onChange={e => onSetTemplateType(e.target.value as TemplateType)}
+        style={{
+          width: '100%',
+          padding: '8px 12px',
+          fontSize: '14px',
+          border: '1.5px solid var(--brand-gray-border)',
+          borderRadius: '6px',
+          background: '#fff',
+          color: 'var(--brand-text)',
+          cursor: 'pointer',
+          fontFamily: 'inherit',
+        }}
+      >
+        {TEMPLATE_TYPES.map(type => (
+          <option key={type} value={type}>
+            {locale.eyebrow[type]}
+          </option>
+        ))}
+      </select>
+
+      {showLayers && (
+        <>
+          <SectionLabel label={s.contentLayers} />
+          <Toggle checked={state.layers.defaults} onChange={() => onToggleLayer('defaults')} label={s.layers.defaults} />
+          <Toggle checked={state.layers.core} onChange={() => onToggleLayer('core')} label={s.layers.core} />
+          <Toggle checked={state.layers.workflows} onChange={() => onToggleLayer('workflows')} label={s.layers.workflows} />
+          <Toggle checked={state.layers.config} onChange={() => onToggleLayer('config')} label={s.layers.config} />
+          <Toggle checked={state.layers.addons} onChange={() => onToggleLayer('addons')} label={s.layers.addons} />
+          <Toggle checked={state.layers.patterns} onChange={() => onToggleLayer('patterns')} label={s.layers.patterns} />
+        </>
+      )}
 
       {showCustomBlocks && (
         <>
@@ -115,11 +152,15 @@ export function Sidebar({ state, onToggleLayer, onSetDepth, onTogglePricing, onT
       )}
       <Toggle checked={state.termsAttached} onChange={onToggleTerms} label={s.serviceTerms} />
 
-      <SectionLabel label={s.depth} />
-      <div style={{ display: 'flex', gap: '8px' }}>
-        <DepthButton active={state.depth === 'overview'} onClick={() => onSetDepth('overview')} label={s.overview} />
-        <DepthButton active={state.depth === 'detail'} onClick={() => onSetDepth('detail')} label={s.detail} />
-      </div>
+      {showDepth && (
+        <>
+          <SectionLabel label={s.depth} />
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <DepthButton active={state.depth === 'overview'} onClick={() => onSetDepth('overview')} label={s.overview} />
+            <DepthButton active={state.depth === 'detail'} onClick={() => onSetDepth('detail')} label={s.detail} />
+          </div>
+        </>
+      )}
     </aside>
   )
 }

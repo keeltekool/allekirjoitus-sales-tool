@@ -230,6 +230,10 @@ body {
   font-size: 20px;
   line-height: 1.5;
 }
+.included-list li > .delete-btn {
+  top: -2px;
+  right: -8px;
+}
 
 /* Terms list */
 .terms-list {
@@ -318,6 +322,109 @@ body {
 }
 
 /* ============================================================
+   ONBOARDING — uses same design tokens as templates
+   ============================================================ */
+.onboarding-lang-btn,
+.onboarding-lang-btn--active {
+  padding: 10px 28px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: var(--font-body), 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.onboarding-lang-btn {
+  border: 1.6px solid var(--brand-gray);
+  background: #ffffff;
+  color: var(--brand-text);
+}
+.onboarding-lang-btn:hover {
+  border-color: var(--brand-primary);
+  color: var(--brand-primary);
+}
+.onboarding-lang-btn--active {
+  border: 1.6px solid var(--brand-primary);
+  background: var(--brand-primary);
+  color: #ffffff;
+}
+
+.onboarding-input {
+  width: 100%;
+  padding: 16px 20px;
+  font-size: 17px;
+  font-family: var(--font-body), 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  border: 1.6px solid var(--brand-gray);
+  border-radius: 12px;
+  outline: none;
+  color: var(--brand-text);
+  transition: border-color 0.15s ease;
+  line-height: 1.65;
+}
+.onboarding-input::placeholder {
+  color: var(--brand-gray-500);
+}
+.onboarding-input:focus {
+  border-color: var(--brand-primary);
+}
+
+.onboarding-template-card,
+.onboarding-template-card--active {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 20px 24px;
+  border-radius: 16px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s ease;
+}
+.onboarding-template-card {
+  border: 1.6px solid var(--brand-gray);
+  background: #ffffff;
+}
+.onboarding-template-card:hover {
+  border-color: var(--brand-primary);
+}
+.onboarding-template-card--active {
+  border: 1.6px solid var(--brand-primary);
+  background: #ffffff;
+}
+
+/* ============================================================
+   FEATURE INTRODUCTION — left-border feature blocks
+   ============================================================ */
+.feature-blocks {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.feature-block {
+  padding-left: 20px;
+  border-left: 3px solid var(--brand-primary);
+  margin-bottom: 8px;
+}
+.feature-block > div {
+  border: none;
+  border-radius: 0;
+  padding: 16px 16px 16px 12px;
+}
+
+.patterns-highlight {
+  background: var(--brand-gray-light);
+  border-radius: 20px;
+  padding: 32px;
+}
+.patterns-highlight > div {
+  margin-bottom: 16px;
+}
+.patterns-highlight > div:last-child {
+  margin-bottom: 0;
+}
+
+/* ============================================================
    EDIT MODE
    ============================================================ */
 .edit-toggle {
@@ -355,6 +462,70 @@ body.editing [contenteditable='true'] {
   border-radius: 4px;
   cursor: text;
   min-height: 1em;
+}
+
+/* Deletable rows — X button, edit mode only */
+.delete-btn {
+  display: none;
+}
+body.editing .delete-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: none;
+  background: var(--brand-primary);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  z-index: 10;
+}
+body.editing .deletable:hover > .delete-btn {
+  opacity: 1;
+}
+body.editing .delete-btn:hover {
+  background: var(--brand-primary-hover);
+}
+/* Table row delete button */
+.delete-btn-row {
+  display: none;
+}
+body.editing .delete-btn-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 50%;
+  right: -12px;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: none;
+  background: var(--brand-primary);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  z-index: 10;
+}
+body.editing tr.deletable:hover .delete-btn-row {
+  opacity: 1;
+}
+body.editing .delete-btn-row:hover {
+  background: var(--brand-primary-hover);
 }
 body.editing .cta-band [contenteditable='true'] {
   outline-color: rgba(255, 255, 255, 0.4);

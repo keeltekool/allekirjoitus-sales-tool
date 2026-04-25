@@ -70,6 +70,17 @@ const allekirjoitus: BrandConfig = {
     },
   },
 
+  terms: {
+    overview: {
+      en: '/tenants/allekirjoitus/kb/TERMS_OVERVIEW_EN.md',
+      fi: '/tenants/allekirjoitus/kb/TERMS_OVERVIEW_EN.md',
+    },
+    detail: {
+      en: '/tenants/allekirjoitus/kb/TERMS_DETAIL_EN.md',
+      fi: '/tenants/allekirjoitus/kb/TERMS_DETAIL_EN.md',
+    },
+  },
+
   languages: ['fi', 'en'],
   defaultLanguage: 'fi',
 

@@ -12,16 +12,14 @@ import { TermsBlock } from '@/components/content/TermsBlock'
 import type { KBDocument, LayerConfig, PricingConfig } from '@/lib/types'
 import { PART_TO_LAYER } from '@/lib/types'
 
-export function EnterpriseOffer({
+export function FeatureIntroduction({
   kb,
   customerName,
   date,
   eyebrow,
   heading,
-  intro,
   layers,
   pricing,
-  showCustomerContext = false,
   termsKB,
   lang = 'en',
 }: {
@@ -30,10 +28,8 @@ export function EnterpriseOffer({
   date: string
   eyebrow: string
   heading: string
-  intro?: string
   layers: LayerConfig
   pricing?: PricingConfig
-  showCustomerContext?: boolean
   termsKB?: KBDocument
   lang?: string
 }) {
@@ -43,40 +39,14 @@ export function EnterpriseOffer({
     return layers[layerKey]
   })
 
+  const isPatterns = (partNumber: number) => partNumber === 8
+
   return (
     <>
       <EditToggle />
       <div className="page">
         <Header date={date} />
         <TitleBlock eyebrow={eyebrow} heading={heading} customer={customerName} />
-
-        {intro && (
-          <div className="section">
-            <div className="section__body" contentEditable suppressContentEditableWarning>
-              <p>{intro}</p>
-            </div>
-          </div>
-        )}
-
-        {showCustomerContext && (
-          <div className="section">
-            <h2 className="section__heading">Customer Context</h2>
-            <div
-              className="section__body"
-              contentEditable
-              suppressContentEditableWarning
-              style={{
-                minHeight: '80px',
-                padding: '16px',
-                background: 'var(--brand-gray-light)',
-                borderRadius: '8px',
-                color: 'var(--brand-gray-500)',
-              }}
-            >
-              <p>Paste customer context here — email threads, call notes, requirements...</p>
-            </div>
-          </div>
-        )}
 
         {activeParts.map(part => (
           <div key={part.number}>
@@ -86,9 +56,22 @@ export function EnterpriseOffer({
               description={part.description}
               lang={lang}
             />
-            {part.sections.map(section => (
-              <KBSection key={section.id} section={section} />
-            ))}
+
+            {isPatterns(part.number) ? (
+              <div className="patterns-highlight">
+                {part.sections.map(section => (
+                  <KBSection key={section.id} section={section} />
+                ))}
+              </div>
+            ) : (
+              <div className="feature-blocks">
+                {part.sections.map(section => (
+                  <div key={section.id} className="feature-block">
+                    <KBSection section={section} />
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         ))}
 
