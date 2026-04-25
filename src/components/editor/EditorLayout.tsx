@@ -48,7 +48,7 @@ export function EditorLayout({
     }
     styleEl.textContent = printFormat === 'a4'
       ? '@media print { @page { size: A4; } }'
-      : '@media print { @page { size: auto; } }'
+      : '@media print { @page { size: 210mm 14000mm; margin: 16mm 18mm 0 18mm; } }'
 
     return () => {
       document.body.classList.remove('print-continuous', 'print-a4')
