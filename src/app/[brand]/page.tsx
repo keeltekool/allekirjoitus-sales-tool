@@ -1,7 +1,23 @@
-'use client'
+import { getBrandConfig } from '@/lib/brand-config'
+import { loadKB } from '@/lib/kb-loader'
+import { notFound } from 'next/navigation'
+import { EnterpriseOfferPage } from './EnterpriseOfferPage'
 
-import { PricingProposal } from '@/components/templates/PricingProposal'
+export default async function BrandHomePage({
+  params,
+}: {
+  params: Promise<{ brand: string }>
+}) {
+  const { brand: brandId } = await params
+  const brand = await getBrandConfig(brandId)
+  if (!brand) notFound()
 
-export default function BrandHomePage() {
-  return <PricingProposal />
+  const kb = loadKB(brand.kb.detail.en)
+
+  return (
+    <EnterpriseOfferPage
+      kb={kb}
+      brandName={brand.name}
+    />
+  )
 }
