@@ -65,7 +65,7 @@ const allekirjoitus: BrandConfig = {
       fi: '/tenants/allekirjoitus/kb/MASTER_KB_OVERVIEW_FI.md',
     },
     detail: {
-      en: '/tenants/allekirjoitus/kb/MASTER_KB_v2.md',
+      en: '/tenants/allekirjoitus/kb/MASTER_KB_RENDER_EN.md',
       fi: '/tenants/allekirjoitus/kb/MASTER_KB_DETAIL_FI.md',
     },
   },
