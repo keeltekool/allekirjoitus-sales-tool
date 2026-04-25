@@ -27,10 +27,15 @@ Multi-brand sales enablement tool for SK ID Solutions KA managers. Generates bra
 - Pricing block component with 4 tiered sub-blocks (Transaction/Monthly/Setup/Add-ons)
 - **Service Terms** — two-tier (overview 10 items / detail 5 grouped sections), depth-toggleable, from T&C PDF
 - **Deletable rows** — edit mode hover shows X button on pricing rows, KB cards, list items, terms sections
-- **Pricing Proposal** — proper sales proposal flow: intro, "Your Enterprise Solution" value props, pricing hero, value note, What's Included
+- **Pricing Proposal** — proper sales proposal flow: intro, "Your Enterprise Solution" value props, pricing hero, value note. No content layers/depth — proposal-grade fixed copy.
 - Customer Context block (empty paste area, toggle-controlled)
 - Edit mode toggle with contenteditable on all text
-- CTA band with Terhi Roll contact from brand config
+- CTA band with configurable sender contact (set in onboarding, defaults to Terhi Roll)
+- **Onboarding sender fields** — name, title, phone, email, pre-filled from brand config, editable per document
+- **"‹ Settings" back button** — top of sidebar, returns to onboarding to change defaults
+- **Print / Export PDF button** — sidebar, triggers browser print dialog
+- **PDF Format selector** — Continuous (one long page, `210mm x 14000mm`) or A4 (paginated). Set in onboarding.
+- **Print CSS** — proper margins (`12mm 14mm`), all editor UI hidden, `break-inside: avoid` on all blocks
 
 ### What's NOT built yet:
 - Neon DB integration — brand config migration from static TypeScript to DB (NEXT)
@@ -49,6 +54,7 @@ Multi-brand sales enablement tool for SK ID Solutions KA managers. Generates bra
 - Finnish KB versions exist but not yet render-optimized
 
 ### Known issues:
+- **Print continuous mode needs verification** — `@page { size: 210mm 14000mm }` set via dynamic style tag, but static `@page` in globals.css may conflict. The static rule has `margin: 16mm 18mm` without `size`. Need to test that continuous actually produces one page in Chrome print-to-PDF. May need to remove the static `@page` and handle everything via dynamic injection.
 - Overview KB Parts 2-5 content quality improved but may need further refinement per user feedback
 - Detail KB (MASTER_KB_RENDER_EN.md) Parts 2-5 still need same treatment as Part 1 (default-only focus)
 - `.gitignore` must include `node_modules/`, `.next/`, `.vercel/`
