@@ -32,7 +32,7 @@ export default async function BrandLayout({
 
   return (
     <div style={cssVars}>
-      <BrandProvider brand={brand} lang={brand.defaultLanguage}>
+      <BrandProvider brand={brand} lang="en">
         {children}
       </BrandProvider>
     </div>
