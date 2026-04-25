@@ -7,7 +7,8 @@ import { Footer } from '@/components/shared/Footer'
 import { EditToggle } from '@/components/shared/EditToggle'
 import { LayerHeader } from '@/components/content/LayerHeader'
 import { KBSection } from '@/components/content/KBSection'
-import type { KBDocument, LayerConfig } from '@/lib/types'
+import { PricingBlock } from '@/components/pricing/PricingBlock'
+import type { KBDocument, LayerConfig, PricingConfig } from '@/lib/types'
 import { PART_TO_LAYER } from '@/lib/types'
 
 export function EnterpriseOffer({
@@ -18,6 +19,8 @@ export function EnterpriseOffer({
   heading,
   intro,
   layers,
+  pricing,
+  showCustomerContext = false,
   lang = 'en',
 }: {
   kb: KBDocument
@@ -27,6 +30,8 @@ export function EnterpriseOffer({
   heading: string
   intro?: string
   layers: LayerConfig
+  pricing?: PricingConfig
+  showCustomerContext?: boolean
   lang?: string
 }) {
   const activeParts = kb.parts.filter(part => {
@@ -50,6 +55,26 @@ export function EnterpriseOffer({
           </div>
         )}
 
+        {showCustomerContext && (
+          <div className="section">
+            <h2 className="section__heading">Customer Context</h2>
+            <div
+              className="section__body"
+              contentEditable
+              suppressContentEditableWarning
+              style={{
+                minHeight: '80px',
+                padding: '16px',
+                background: 'var(--brand-gray-light)',
+                borderRadius: '8px',
+                color: 'var(--brand-gray-500)',
+              }}
+            >
+              <p>Paste customer context here — email threads, call notes, requirements...</p>
+            </div>
+          </div>
+        )}
+
         {activeParts.map(part => (
           <div key={part.number}>
             <LayerHeader
@@ -63,6 +88,8 @@ export function EnterpriseOffer({
             ))}
           </div>
         ))}
+
+        {pricing && <PricingBlock config={pricing} />}
 
         <CTABand />
         <Footer />

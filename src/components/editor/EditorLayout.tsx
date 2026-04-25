@@ -46,6 +46,8 @@ export function EditorLayout({
           heading={`${brand.name} Enterprise`}
           intro={intro}
           layers={editor.state.layers}
+          pricing={editor.state.pricing}
+          showCustomerContext={editor.state.customBlocks.customerContext}
           lang={lang}
         />
       </main>
