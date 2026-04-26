@@ -8,7 +8,7 @@ Multi-brand sales enablement tool for SK ID Solutions KA managers. Generates bra
 - `docs/plans/2026-04-25-sales-template-tool-implementation.md` — 28-task build plan
 - `reference/` — style reference HTML templates (pixel-match required)
 
-## Current build state (2026-04-25)
+## Current build state (2026-04-26)
 **DEPLOYED:** allekirjoitus-sales-tool.vercel.app
 **GitHub:** keeltekool/allekirjoitus-sales-tool
 **Neon:** allekirjoitus-sales-tool (EU Frankfurt)
@@ -35,29 +35,45 @@ Multi-brand sales enablement tool for SK ID Solutions KA managers. Generates bra
 - **"‹ Settings" back button** — top of sidebar, returns to onboarding to change defaults
 - **Print / Export PDF button** — sidebar, triggers browser print dialog
 - **PDF Format selector** — Continuous (one long page, `210mm x 14000mm`) or A4 (paginated). Set in onboarding.
-- **Print CSS** — proper margins (`12mm 14mm`), all editor UI hidden, `break-inside: avoid` on all blocks
+- **Print CSS** — proper margins, all editor UI hidden, `break-inside: avoid` on all blocks. All `@page` rules via dynamic style tag (no static conflict).
+- **Scroll reset** — on document create, template switch, and depth change
+- **Edit mode state** — lifted to EditorLayout, syncs body class, resets on template switch (no desync)
+- **Desktop-only guard** — blocks editor below 900px with branded "Desktop View Required" message
+- **localStorage autosave** — persists session + editor state after content is edited (input on contentEditable). Resume banner on reload with customer name + timestamp. Clears on "Back to Settings".
+- **PDF filename** — dynamic `document.title` before print: `Brand_Template_Customer_Date`
+- **Localized pricing** — all pricing labels, descriptions, table headers in EN/FI via `pricing-data.ts`. EUR amounts shared, only text localized.
+- **English default language** — EN selected by default on onboarding
 
 ### What's NOT built yet:
-- Neon DB integration — brand config migration from static TypeScript to DB (NEXT)
-- Finnish render-optimized terms files (EN used for both languages currently)
+- Neon DB integration — brand config migration from static TypeScript to DB (do together with presets/drafts)
+- Password auth gate (SITE_PASSWORD env var, cookie-based)
+- Price List validity date + version number
+- Detail KB Parts 2-5 rewrite (match Part 1 quality)
 
 ### FROZEN (documented, not building now):
-- **Password auth** — Task 26 from plan. Simple middleware: check cookie → redirect to `/login`. `SITE_PASSWORD` env var. Global protection. Ready to implement when needed.
-- **Presets save/load** — Tasks 22(partial)+25 from plan. Drizzle `presets` table (id, brand_id, name, template_type, layer_config JSONB, depth, pricing_config JSONB, is_builtin). Sidebar dropdown "Load preset..." + "Save as preset..." scoped per brand. Built-in presets from PRD Section 11. Requires Neon DB connection first.
-- **Finnish render-optimized terms** — TERMS_OVERVIEW_FI.md + TERMS_DETAIL_FI.md. Translate from EN versions. Currently EN files used for both languages.
+- **Password auth** — Simple middleware: check cookie → redirect to `/login`. `SITE_PASSWORD` env var.
+- **Presets save/load** — Drizzle `presets` table. Start with hardcoded built-in presets (no DB needed), then add save/load when DB exists.
 
 ### KB files (render-optimized):
 - `MASTER_KB_OVERVIEW_EN.md` — Overview depth, structured key points (ALL parts rewritten)
 - `MASTER_KB_RENDER_EN.md` — Detail depth, structured labeled items (Part 1 rewritten, Parts 2-5 done)
 - `TERMS_OVERVIEW_EN.md` — 10 key service terms (overview depth)
 - `TERMS_DETAIL_EN.md` — 5 grouped sections with comprehensive sub-items (detail depth)
+- `TERMS_OVERVIEW_FI.md` — 10 key service terms in Finnish (overview depth)
+- `TERMS_DETAIL_FI.md` — 5 grouped sections with comprehensive sub-items in Finnish (detail depth)
 - Finnish KB versions exist but not yet render-optimized
 
 ### Known issues:
-- **Print continuous mode needs verification** — `@page { size: 210mm 14000mm }` set via dynamic style tag, but static `@page` in globals.css may conflict. The static rule has `margin: 16mm 18mm` without `size`. Need to test that continuous actually produces one page in Chrome print-to-PDF. May need to remove the static `@page` and handle everything via dynamic injection.
-- Overview KB Parts 2-5 content quality improved but may need further refinement per user feedback
-- Detail KB (MASTER_KB_RENDER_EN.md) Parts 2-5 still need same treatment as Part 1 (default-only focus)
+- Detail KB Parts 2-5 content quality uneven — needs same rewrite treatment as Part 1 (default-only focus)
+- Print output not yet validated by real KA — page breaks, fonts, spacing in actual PDF need real-world testing
 - `.gitignore` must include `node_modules/`, `.next/`, `.vercel/`
+
+### Future vision (from external analysis + discussion):
+- **Enterprise Offer Engine** — guided questionnaire (8-10 questions about customer) auto-selects layers, pricing, add-ons. Replaces manual sidebar toggling for most use cases.
+- **Customer-facing subset** — interactive read-only version via shareable link. Customer explores features, toggles interest areas, KA gets engagement analytics. Near-term: "Customer View" export as clean HTML page with unique URL + scroll tracking.
+- **Hardcoded presets** — "New Enterprise customer", "Pricing renewal", "API integration offer" etc. No DB needed.
+- **Sender persistence** — localStorage for sender defaults separate from draft autosave.
+- See `docs/analysis/2026-04-26-sales-tool-teardown-and-roadmap.md` for full external analysis.
 
 ## Tech stack
 - **Next.js** (latest) + **Tailwind CSS**
