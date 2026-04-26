@@ -45,7 +45,7 @@ function ResumeBanner({ draft, onResume, onDiscard, lang }: {
   const dateStr = date.toLocaleDateString(lang === 'fi' ? 'fi-FI' : 'en-GB', { day: 'numeric', month: 'short' })
 
   return (
-    <div style={{
+    <div className="resume-banner" style={{
       position: 'fixed',
       bottom: '24px',
       left: '50%',

@@ -587,7 +587,7 @@ body.editing .cta-band [contenteditable='true'] {
 /* ============================================================
    MOBILE GUARD — editor requires desktop
    ============================================================ */
-@media (max-width: 899px) {
+@media screen and (max-width: 899px) {
   .mobile-block {
     display: flex !important;
     align-items: center;
@@ -629,6 +629,10 @@ body.editing .cta-band [contenteditable='true'] {
   .delete-btn-row {
     display: none !important;
   }
+  .mobile-block,
+  .resume-banner {
+    display: none !important;
+  }
 
   body.print-continuous .section,
   body.print-continuous .pricing-card,
@@ -645,7 +649,7 @@ body.editing .cta-band [contenteditable='true'] {
   }
 
   .page {
-    padding: 12mm 14mm;
+    padding: 0;
     max-width: 100%;
   }
 
