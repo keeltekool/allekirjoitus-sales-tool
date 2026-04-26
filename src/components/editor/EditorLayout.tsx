@@ -53,7 +53,7 @@ export function EditorLayout({
     }
     styleEl.textContent = printFormat === 'a4'
       ? '@media print { @page { size: A4; margin: 16mm 18mm; } }'
-      : '@media print { @page { size: 210mm 14000mm; margin: 16mm 18mm 0 18mm; } }'
+      : '@media print { @page { size: 210mm 2000mm; margin: 16mm 18mm 0 18mm; } }'
 
     return () => {
       document.body.classList.remove('print-continuous', 'print-a4')
@@ -249,6 +249,19 @@ export function EditorLayout({
             const customer = editor.state.customerName.replace(/\s+/g, '_')
             const dateStr = new Date().toISOString().slice(0, 10)
             document.title = `${brand.name.replace(/\./g, '')}_${templateLabel}_${customer}_${dateStr}`
+
+            if (printFormat === 'continuous' && mainRef.current) {
+              const pageEl = mainRef.current.querySelector('.page') as HTMLElement
+              if (pageEl) {
+                const heightPx = pageEl.scrollHeight
+                const heightMm = Math.ceil(heightPx * 0.2646) + 40
+                const styleEl = document.getElementById('print-format-style') as HTMLStyleElement
+                if (styleEl) {
+                  styleEl.textContent = `@media print { @page { size: 210mm ${heightMm}mm; margin: 16mm 18mm 0 18mm; } }`
+                }
+              }
+            }
+
             window.print()
             setTimeout(() => { document.title = original }, 500)
           }}
