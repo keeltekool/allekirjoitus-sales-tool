@@ -55,6 +55,8 @@ export function PricingProposal({
   termsKB,
   sender,
   lang = 'en',
+  editing = false,
+  onToggleEditing,
 }: {
   customerName: string
   date: string
@@ -65,6 +67,8 @@ export function PricingProposal({
   termsKB?: KBDocument
   sender?: BrandContact
   lang?: string
+  editing?: boolean
+  onToggleEditing?: () => void
 }) {
   const l = lang as 'en' | 'fi'
   const solutionHeading = l === 'fi' ? 'Enterprise-ratkaisunne' : 'Your Enterprise Solution'
@@ -72,7 +76,7 @@ export function PricingProposal({
 
   return (
     <>
-      <EditToggle />
+      <EditToggle editing={editing} onToggle={onToggleEditing ?? (() => {})} />
       <div className="page">
         <Header date={date} />
         <TitleBlock eyebrow={eyebrow} heading={heading} customer={customerName} />
@@ -122,7 +126,7 @@ export function PricingProposal({
         </Section>
 
         {/* Pricing — hero */}
-        <PricingBlock config={pricing} />
+        <PricingBlock config={pricing} lang={lang} />
 
         {/* Value note */}
         <Deletable>

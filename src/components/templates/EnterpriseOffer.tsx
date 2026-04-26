@@ -26,6 +26,8 @@ export function EnterpriseOffer({
   termsKB,
   sender,
   lang = 'en',
+  editing = false,
+  onToggleEditing,
 }: {
   kb: KBDocument
   customerName: string
@@ -39,6 +41,8 @@ export function EnterpriseOffer({
   termsKB?: KBDocument
   sender?: BrandContact
   lang?: string
+  editing?: boolean
+  onToggleEditing?: () => void
 }) {
   const activeParts = kb.parts.filter(part => {
     const layerKey = PART_TO_LAYER[part.number]
@@ -48,7 +52,7 @@ export function EnterpriseOffer({
 
   return (
     <>
-      <EditToggle />
+      <EditToggle editing={editing} onToggle={onToggleEditing ?? (() => {})} />
       <div className="page">
         <Header date={date} />
         <TitleBlock eyebrow={eyebrow} heading={heading} customer={customerName} />
@@ -95,7 +99,7 @@ export function EnterpriseOffer({
           </div>
         ))}
 
-        {pricing && <PricingBlock config={pricing} />}
+        {pricing && <PricingBlock config={pricing} lang={lang} />}
 
         {termsKB && <TermsBlock terms={termsKB} lang={lang} />}
 

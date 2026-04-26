@@ -14,10 +14,14 @@ export function PricingCard({
   title,
   subtitle,
   items,
+  headerComponent = 'Component',
+  headerPrice = 'Price',
 }: {
   title: string
   subtitle: string
   items: PricingItem[]
+  headerComponent?: string
+  headerPrice?: string
 }) {
   return (
     <div className="pricing-card">
@@ -28,8 +32,8 @@ export function PricingCard({
       <table className="pricing-table">
         <thead>
           <tr>
-            <th>Component</th>
-            <th style={{ textAlign: 'right' }}>Price</th>
+            <th>{headerComponent}</th>
+            <th style={{ textAlign: 'right' }}>{headerPrice}</th>
           </tr>
         </thead>
         <tbody>

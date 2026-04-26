@@ -15,6 +15,8 @@ export function PriceList({
   pricing,
   termsKB,
   lang = 'en',
+  editing = false,
+  onToggleEditing,
 }: {
   date: string
   eyebrow: string
@@ -22,15 +24,17 @@ export function PriceList({
   pricing: PricingConfig
   termsKB?: KBDocument
   lang?: string
+  editing?: boolean
+  onToggleEditing?: () => void
 }) {
   return (
     <>
-      <EditToggle />
+      <EditToggle editing={editing} onToggle={onToggleEditing ?? (() => {})} />
       <div className="page">
         <Header date={date} />
         <TitleBlock eyebrow={eyebrow} heading={heading} />
 
-        <PricingBlock config={pricing} />
+        <PricingBlock config={pricing} lang={lang} />
 
         {termsKB && <TermsBlock terms={termsKB} lang={lang} />}
 

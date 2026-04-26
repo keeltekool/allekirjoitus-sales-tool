@@ -148,9 +148,6 @@ export function Sidebar({ state, onToggleLayer, onSetDepth, onTogglePricing, onT
         <>
           <SectionLabel label={s.customBlocks} />
           <Toggle checked={state.customBlocks.customerContext} onChange={() => onToggleCustomBlock('customerContext')} label={s.customerContext} />
-          {state.templateType !== 'pricing_proposal' && (
-            <Toggle checked={state.customBlocks.whatsIncluded} onChange={() => onToggleCustomBlock('whatsIncluded')} label={s.whatsIncluded} />
-          )}
         </>
       )}
 

@@ -9,7 +9,10 @@ import { PricingProposal } from '@/components/templates/PricingProposal'
 import { PriceList } from '@/components/templates/PriceList'
 import type { BrandContact } from '@/lib/brand-config'
 import type { KBDocument, PrintFormat } from '@/lib/types'
-import { useEffect } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
+import type { EditorState } from '@/lib/types'
+
+const DRAFT_KEY = 'allekirjoitus-draft'
 
 export function EditorLayout({
   overviewKB,
@@ -22,6 +25,7 @@ export function EditorLayout({
   sender,
   printFormat = 'continuous',
   onBackToOnboarding,
+  savedEditorState,
 }: {
   overviewKB: KBDocument
   detailKB: KBDocument
@@ -33,6 +37,7 @@ export function EditorLayout({
   sender?: BrandContact
   printFormat?: PrintFormat
   onBackToOnboarding?: () => void
+  savedEditorState?: EditorState
 }) {
   const { brand, locale, lang } = useBrand()
 
@@ -47,7 +52,7 @@ export function EditorLayout({
       document.head.appendChild(styleEl)
     }
     styleEl.textContent = printFormat === 'a4'
-      ? '@media print { @page { size: A4; } }'
+      ? '@media print { @page { size: A4; margin: 16mm 18mm; } }'
       : '@media print { @page { size: 210mm 14000mm; margin: 16mm 18mm 0 18mm; } }'
 
     return () => {
@@ -55,7 +60,51 @@ export function EditorLayout({
       styleEl?.remove()
     }
   }, [printFormat])
-  const editor = useEditorState(createInitialState(initialTemplateType, initialLang, initialCustomerName))
+  const editor = useEditorState(
+    savedEditorState ?? createInitialState(initialTemplateType, initialLang, initialCustomerName)
+  )
+
+  const [editing, setEditing] = useState(false)
+  const toggleEditing = useCallback(() => setEditing(prev => !prev), [])
+  const [isDirty, setIsDirty] = useState(!!savedEditorState)
+  const mainRef = useRef<HTMLElement>(null)
+  const saveTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined)
+
+  useEffect(() => {
+    document.body.classList.toggle('editing', editing)
+    return () => { document.body.classList.remove('editing') }
+  }, [editing])
+
+  useEffect(() => {
+    setEditing(false)
+    window.scrollTo(0, 0)
+  }, [editor.state.templateType])
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [editor.state.depth])
+
+  useEffect(() => {
+    const main = mainRef.current
+    if (!main) return
+    function onInput() { setIsDirty(true) }
+    main.addEventListener('input', onInput)
+    return () => main.removeEventListener('input', onInput)
+  }, [])
+
+  useEffect(() => {
+    if (!isDirty) return
+    clearTimeout(saveTimerRef.current)
+    saveTimerRef.current = setTimeout(() => {
+      const draft = {
+        session: { lang: initialLang, customerName: initialCustomerName, templateType: initialTemplateType, sender, printFormat },
+        editorState: editor.state,
+        savedAt: Date.now(),
+      }
+      try { localStorage.setItem(DRAFT_KEY, JSON.stringify(draft)) } catch {}
+    }, 1000)
+    return () => clearTimeout(saveTimerRef.current)
+  }, [isDirty, editor.state, initialLang, initialCustomerName, initialTemplateType, sender, printFormat])
 
   const kb = editor.state.depth === 'overview' ? overviewKB : detailKB
   const termsKB = editor.state.depth === 'overview' ? termsOverviewKB : termsDetailKB
@@ -90,6 +139,8 @@ export function EditorLayout({
             termsKB={showTerms ? termsKB : undefined}
             sender={sender}
             lang={lang}
+            editing={editing}
+            onToggleEditing={toggleEditing}
           />
         )
       case 'feature_introduction':
@@ -105,6 +156,8 @@ export function EditorLayout({
             termsKB={showTerms ? termsKB : undefined}
             sender={sender}
             lang={lang}
+            editing={editing}
+            onToggleEditing={toggleEditing}
           />
         )
       case 'pricing_proposal':
@@ -119,6 +172,8 @@ export function EditorLayout({
             termsKB={showTerms ? termsKB : undefined}
             sender={sender}
             lang={lang}
+            editing={editing}
+            onToggleEditing={toggleEditing}
           />
         )
       case 'price_list':
@@ -130,28 +185,79 @@ export function EditorLayout({
             pricing={editor.state.pricing}
             termsKB={showTerms ? termsKB : undefined}
             lang={lang}
+            editing={editing}
+            onToggleEditing={toggleEditing}
           />
         )
     }
   }
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh' }}>
-      <Sidebar
-        state={editor.state}
-        onToggleLayer={editor.toggleLayer}
-        onSetDepth={editor.setDepth}
-        onTogglePricing={editor.togglePricing}
-        onToggleCustomBlock={editor.toggleCustomBlock}
-        onToggleTerms={editor.toggleTerms}
-        onSetTemplateType={editor.setTemplateType}
-        onBackToOnboarding={onBackToOnboarding}
-        onPrint={() => window.print()}
-        printFormat={printFormat}
-      />
-      <main style={{ flex: 1, overflow: 'auto' }}>
-        {renderTemplate()}
-      </main>
-    </div>
+    <>
+      <div className="mobile-block" style={{
+        display: 'none',
+        position: 'fixed',
+        inset: 0,
+        zIndex: 9999,
+        background: '#fff',
+        padding: '48px 24px',
+        textAlign: 'center' as const,
+      }}>
+        <div style={{ maxWidth: '400px', margin: '0 auto' }}>
+          <div style={{ fontSize: '48px', marginBottom: '24px' }}>🖥️</div>
+          <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '28px', marginBottom: '16px', color: 'var(--brand-dark)' }}>
+            {lang === 'fi' ? 'Työpöytänäkymä vaaditaan' : 'Desktop View Required'}
+          </h2>
+          <p style={{ fontSize: '16px', lineHeight: 1.6, color: 'var(--brand-gray-600)' }}>
+            {lang === 'fi'
+              ? 'Tämä työkalu on suunniteltu A4/PDF-asiakirjojen tuottamiseen ja vaatii vähintään 900px leveän näytön. Avaa tietokoneella.'
+              : 'This tool is designed for producing A4/PDF documents and requires a screen width of at least 900px. Please open on a desktop computer.'}
+          </p>
+          {onBackToOnboarding && (
+            <button
+              onClick={onBackToOnboarding}
+              style={{
+                marginTop: '24px',
+                padding: '12px 24px',
+                background: 'var(--brand-primary)',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '8px',
+                fontSize: '15px',
+                fontWeight: 600,
+                cursor: 'pointer',
+              }}
+            >
+              ‹ {lang === 'fi' ? 'Takaisin' : 'Go Back'}
+            </button>
+          )}
+        </div>
+      </div>
+      <div style={{ display: 'flex', minHeight: '100vh' }}>
+        <Sidebar
+          state={editor.state}
+          onToggleLayer={editor.toggleLayer}
+          onSetDepth={editor.setDepth}
+          onTogglePricing={editor.togglePricing}
+          onToggleCustomBlock={editor.toggleCustomBlock}
+          onToggleTerms={editor.toggleTerms}
+          onSetTemplateType={editor.setTemplateType}
+          onBackToOnboarding={onBackToOnboarding}
+          onPrint={() => {
+            const original = document.title
+            const templateLabel = locale.eyebrow[editor.state.templateType].replace(/\s+/g, '_')
+            const customer = editor.state.customerName.replace(/\s+/g, '_')
+            const dateStr = new Date().toISOString().slice(0, 10)
+            document.title = `${brand.name.replace(/\./g, '')}_${templateLabel}_${customer}_${dateStr}`
+            window.print()
+            setTimeout(() => { document.title = original }, 500)
+          }}
+          printFormat={printFormat}
+        />
+        <main ref={mainRef} style={{ flex: 1, overflow: 'auto' }}>
+          {renderTemplate()}
+        </main>
+      </div>
+    </>
   )
 }

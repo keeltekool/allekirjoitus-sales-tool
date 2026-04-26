@@ -585,6 +585,17 @@ body.editing .cta-band [contenteditable='true'] {
 }
 
 /* ============================================================
+   MOBILE GUARD — editor requires desktop
+   ============================================================ */
+@media (max-width: 899px) {
+  .mobile-block {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* ============================================================
    PRINT STYLES
    ============================================================ */
 @media print {
@@ -619,14 +630,13 @@ body.editing .cta-band [contenteditable='true'] {
     display: none !important;
   }
 
-  @page {
-    margin: 16mm 18mm;
-  }
-  body.print-a4 {
-    /* A4 paginated mode */
-  }
-  body.print-continuous {
-    /* Continuous mode — no fixed page size */
+  body.print-continuous .section,
+  body.print-continuous .pricing-card,
+  body.print-continuous .comparison-note,
+  body.print-continuous .cta-band,
+  body.print-continuous .title-block {
+    break-inside: auto;
+    page-break-inside: auto;
   }
 
   html,
